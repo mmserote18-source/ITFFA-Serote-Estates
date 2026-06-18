@@ -137,11 +137,11 @@ function userRoleBadge(role) {
 function buildPropertyCard(prop) {
   const fav = isFav(prop.id);
   return `
-    <article class="property-card" data-id="${prop.id}">
+    <article class="property-card" data-id="${prop.id}" onclick="window.location.href='property-detail.html?id=${prop.id}'" style="cursor:pointer">
       <div class="card-image-wrap">
         <img src="${prop.image}" alt="${prop.title}" loading="lazy" />
         <span class="card-badge ${prop.status === 'for-rent' ? 'for-rent' : ''}">${prop.status === 'for-rent' ? 'For Rent' : 'For Sale'}</span>
-        <button class="fav-btn ${fav ? 'active' : ''}" aria-label="Save to favourites" data-id="${prop.id}">
+        <button class="fav-btn ${fav ? 'active' : ''}" aria-label="Save to favourites" data-id="${prop.id}" onclick="event.stopPropagation()">
           ${fav ? '❤️' : '🤍'}
         </button>
       </div>
@@ -160,7 +160,6 @@ function buildPropertyCard(prop) {
             <img class="agent-avatar" src="${prop.agentAvatar}" alt="${prop.agent}" />
             <span class="agent-name">${prop.agent}</span>
           </div>
-          <a href="property-detail.html?id=${prop.id}" class="btn btn-outline btn-sm">View</a>
         </div>
       </div>
     </article>`;
@@ -244,16 +243,31 @@ function initHomePage() {
     });
   }
 
-  document.querySelectorAll('.count-up').forEach(el => {
-    const target = parseInt(el.dataset.target, 10);
-    let current = 0;
-    const step = Math.ceil(target / 50);
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current.toLocaleString() + (el.dataset.suffix || '');
-      if (current >= target) clearInterval(timer);
-    }, 30);
-  });
+  const statEls = {
+    active: document.getElementById('stat-active'),
+    sold:   document.getElementById('stat-sold'),
+    agents: document.getElementById('stat-agents'),
+  };
+  if (statEls.active) {
+    api.getPublicStats().then(data => {
+      function animateStat(el, target) {
+        let current = 0;
+        const step = Math.ceil(target / 50) || 1;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = current.toLocaleString();
+          if (current >= target) clearInterval(timer);
+        }, 30);
+      }
+      animateStat(statEls.active, data.active);
+      animateStat(statEls.sold,   data.sold);
+      animateStat(statEls.agents, data.agents);
+    }).catch(() => {
+      statEls.active.textContent = '–';
+      statEls.sold.textContent   = '–';
+      statEls.agents.textContent = '–';
+    });
+  }
 }
 
 // =============================================================

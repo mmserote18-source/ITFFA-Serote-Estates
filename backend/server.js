@@ -27,6 +27,17 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+app.get('/api/stats', async (_req, res) => {
+  try {
+    const [[active]]  = await pool.query(`SELECT COUNT(*) AS n FROM properties WHERE status IN ('for-sale','for-rent')`);
+    const [[sold]]    = await pool.query(`SELECT COUNT(*) AS n FROM properties WHERE status = 'sold'`);
+    const [[agents]]  = await pool.query(`SELECT COUNT(*) AS n FROM users WHERE role = 'agent' AND is_active = 1`);
+    res.json({ active: active.n, sold: sold.n, agents: agents.n });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');

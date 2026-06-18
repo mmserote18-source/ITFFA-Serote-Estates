@@ -41,6 +41,7 @@ const api = {
   post: (path, body) => apiFetch(path, { method: 'POST', body: JSON.stringify(body) }),
   patch: (path, body) => apiFetch(path, { method: 'PATCH', body: JSON.stringify(body) }),
   health: () => apiFetch('/health'),
+  getPublicStats: () => apiFetch('/stats'),
   getProperties: (params = {}) => {
     const qs = new URLSearchParams();
     Object.entries(params).forEach(([k, v]) => { if (v) qs.set(k, v); });
