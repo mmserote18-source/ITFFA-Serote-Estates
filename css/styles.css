@@ -684,17 +684,17 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 /* ---- Notification Bell ---- */
 .notif-bell-wrap { position: relative; }
 .notif-bell-btn {
-  background: rgba(255,255,255,0.1);
+  background: transparent;
   border: none;
   border-radius: var(--radius);
-  color: #fff;
-  font-size: 1rem;
-  padding: 0.4rem 0.7rem;
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+  padding: 0.4rem 0.5rem;
   cursor: pointer;
   position: relative;
-  transition: background var(--transition);
+  transition: color var(--transition);
 }
-.notif-bell-btn:hover { background: rgba(255,255,255,0.18); }
+.notif-bell-btn:hover { color: #fff; }
 .notif-badge {
   position: absolute;
   top: -5px; right: -5px;
