@@ -903,8 +903,9 @@ function renderEditListingForm(container, prop, onSuccess) {
       <div class="form-row">
         <div class="form-group"><label>Listing Status <span class="req">*</span></label>
           <select class="form-control" id="al-status" required>
-            <option value="for-sale" ${prop.status==='for-sale'?'selected':''}>for-sale</option>
-            <option value="for-rent" ${prop.status==='for-rent'?'selected':''}>for-rent</option>
+            <option value="for-sale" ${prop.status==='for-sale'?'selected':''}>For Sale</option>
+            <option value="for-rent" ${prop.status==='for-rent'?'selected':''}>For Rent</option>
+            <option value="sold"     ${prop.status==='sold'?'selected':''}>Sold</option>
           </select></div>
         <div class="form-group"><label>Price (ZAR) <span class="req">*</span></label><input class="form-control" id="al-price" type="number" value="${prop.price}" required /></div>
       </div>
@@ -1012,7 +1013,7 @@ function renderAddListingForm(container, onSuccess) {
         <div class="form-group"><label>Property Type <span class="req">*</span></label><select class="form-control" id="al-type" required><option value="">Select type</option><option value="house">house</option><option value="apartment">apartment</option><option value="townhouse">townhouse</option></select></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Listing Status <span class="req">*</span></label><select class="form-control" id="al-status" required><option value="for-sale">for-sale</option><option value="for-rent">for-rent</option></select></div>
+        <div class="form-group"><label>Listing Status <span class="req">*</span></label><select class="form-control" id="al-status" required><option value="for-sale">For Sale</option><option value="for-rent">For Rent</option><option value="sold">Sold</option></select></div>
         <div class="form-group"><label>Price (ZAR) <span class="req">*</span></label><input class="form-control" id="al-price" type="number" required placeholder="e.g. 2500000" /></div>
       </div>
       <div class="form-row">
