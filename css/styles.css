@@ -969,8 +969,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .hamburger.drawer-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  .navbar .nav-links, .navbar .nav-auth { display: none; }
+  .navbar .nav-links { display: none; }
+  /* Hide navbar auth (username/logout/login/register) — drawer handles it on mobile */
+  .navbar .nav-auth { display: none !important; }
   .hamburger { display: flex; }
+  /* Push bell + hamburger to the right, together */
+  .navbar .notif-bell-wrap { margin-left: auto; margin-right: 0.4rem; }
   .hero { padding: 3.5rem 0 3rem; }
   .search-box { grid-template-columns: 1fr; padding: 1rem; }
   .stats-bar .container { gap: 2rem; }
