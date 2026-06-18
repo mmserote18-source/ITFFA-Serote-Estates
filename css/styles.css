@@ -111,7 +111,6 @@ ul { list-style: none; }
 .navbar .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 64px;
 }
 .nav-brand {
