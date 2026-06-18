@@ -1252,17 +1252,67 @@ document.addEventListener('keydown', e => {
 // =============================================================
 function initNav() {
   const hamburger = document.querySelector('.hamburger');
-  const navbar = document.querySelector('.navbar');
-  if (!hamburger || !navbar) return;
-  hamburger.addEventListener('click', () => navbar.classList.toggle('nav-mobile-open'));
-  document.querySelectorAll('.nav-links a, .nav-auth .btn').forEach(el => {
-    el.addEventListener('click', () => navbar.classList.remove('nav-mobile-open'));
-  });
-  document.addEventListener('click', e => {
-    if (navbar.classList.contains('nav-mobile-open') && !navbar.contains(e.target)) {
-      navbar.classList.remove('nav-mobile-open');
-    }
-  });
+  if (!hamburger) return;
+
+  // Build drawer
+  const overlay = document.createElement('div');
+  overlay.className = 'nav-drawer-overlay';
+
+  const drawer = document.createElement('div');
+  drawer.className = 'nav-drawer';
+  drawer.setAttribute('role', 'dialog');
+  drawer.setAttribute('aria-label', 'Navigation menu');
+
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+
+  function drawerLink(href, label) {
+    const isActive = href === path;
+    return `<a href="${href}" class="nav-drawer-link${isActive ? ' active' : ''}">${label}</a>`;
+  }
+
+  drawer.innerHTML = `
+    <div class="nav-drawer-header">
+      <a href="index.html" class="nav-brand" style="font-size:1.35rem">Estate<span style="color:var(--brass-l);font-weight:400">Hub</span></a>
+      <button class="nav-drawer-close" aria-label="Close menu">✕</button>
+    </div>
+    <nav class="nav-drawer-links">
+      ${drawerLink('index.html', 'Home')}
+      ${drawerLink('listings.html', 'Listings')}
+      ${drawerLink('favourites.html', 'Favourites')}
+      <a href="admin.html" class="nav-drawer-link nav-admin-link" style="display:none">Admin</a>
+      <a href="landlord.html" class="nav-drawer-link nav-agent-link" style="display:none">My Portal</a>
+      <a href="#" class="nav-drawer-link nav-buyer-link" style="display:none" onclick="openMyBookingsModal();return false">My Bookings</a>
+    </nav>
+    <div class="nav-drawer-footer hide-when-auth">
+      <a href="login.html" class="btn btn-outline btn-block" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.28)">Log In</a>
+      <a href="register.html" class="btn btn-accent btn-block">Register</a>
+    </div>
+    <div class="nav-drawer-footer show-when-auth" style="display:none">
+      <span class="nav-drawer-user">Signed in as <strong class="user-name-display"></strong></span>
+      <button class="btn btn-block" style="background:rgba(255,255,255,0.1);color:#fff" onclick="logoutUser()">Logout</button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(drawer);
+
+  const openDrawer = () => {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    hamburger.classList.add('drawer-open');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeDrawer = () => {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    hamburger.classList.remove('drawer-open');
+    document.body.style.overflow = '';
+  };
+
+  hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  overlay.addEventListener('click', closeDrawer);
+  drawer.querySelector('.nav-drawer-close').addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('.nav-drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
 }
 
 function attachFavListeners(container) {
