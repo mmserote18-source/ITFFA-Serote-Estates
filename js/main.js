@@ -1255,8 +1255,13 @@ function initNav() {
   const navbar = document.querySelector('.navbar');
   if (!hamburger || !navbar) return;
   hamburger.addEventListener('click', () => navbar.classList.toggle('nav-mobile-open'));
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => navbar.classList.remove('nav-mobile-open'));
+  document.querySelectorAll('.nav-links a, .nav-auth .btn').forEach(el => {
+    el.addEventListener('click', () => navbar.classList.remove('nav-mobile-open'));
+  });
+  document.addEventListener('click', e => {
+    if (navbar.classList.contains('nav-mobile-open') && !navbar.contains(e.target)) {
+      navbar.classList.remove('nav-mobile-open');
+    }
   });
 }
 
