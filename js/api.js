@@ -9,13 +9,14 @@ function safeJsonParse(str, fallback) {
   }
 }
 
-/** Use Node API on :3000 when the site is served by Apache/XAMPP on port 80/443 */
 const API_BASE = (() => {
-  const port = window.location.port;
-  if (!port || port === '80' || port === '443') {
-    return `${window.location.protocol}//${window.location.hostname}:3000/api`;
+  const { hostname, port } = window.location;
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return `http://localhost:3000/api`;
   }
-  return `${window.location.origin}/api`;
+  // Production on Railway
+  return 'https://itffa4-propertywebsite-production.up.railway.app/api';
 })();
 
 function getAuthHeaders() {
