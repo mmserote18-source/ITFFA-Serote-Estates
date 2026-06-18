@@ -1369,7 +1369,7 @@ function injectNotificationBell() {
       </div>
       <div id="notif-list"><p class="notif-empty">Loading...</p></div>
     </div>`;
-  target.insertBefore(wrap, target.firstChild);
+  navContainer.insertBefore(wrap, target);
 
   document.getElementById('notif-bell').addEventListener('click', e => {
     e.stopPropagation();
