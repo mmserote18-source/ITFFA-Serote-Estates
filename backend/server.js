@@ -32,7 +32,14 @@ app.get('/api/health', async (_req, res) => {
     await pool.query('SELECT 1');
     res.json({ status: 'ok', database: 'connected' });
   } catch (err) {
-    res.status(503).json({ status: 'error', database: 'disconnected', message: err.message });
+    res.status(503).json({
+      status: 'error',
+      database: 'disconnected',
+      message: err.message || String(err),
+      code: err.code,
+      host: process.env.DB_HOST || process.env.MYSQLHOST || '(not set)',
+      db: process.env.DB_NAME || process.env.MYSQLDATABASE || '(not set)',
+    });
   }
 });
 
