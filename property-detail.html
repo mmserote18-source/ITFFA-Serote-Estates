@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="detail-title">Property Detail – EstateHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏡</span>Estate<span class="accent">Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="favourites.html">Favourites</a></li>
+        <li class="nav-admin-link" style="display:none"><a href="admin.html">Admin</a></li>
+        <li class="nav-agent-link" style="display:none"><a href="landlord.html">My Portal</a></li>
+        <li class="nav-buyer-link" style="display:none"><a href="#" onclick="openMyBookingsModal();return false">My Bookings</a></li>
+      </ul>
+      <div class="nav-auth hide-when-auth">
+        <a href="login.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5)">Log In</a>
+        <a href="register.html" class="btn btn-accent btn-sm">Register</a>
+      </div>
+      <div class="nav-auth show-when-auth" style="display:none">
+        <span style="color:rgba(255,255,255,0.8);font-size:0.88rem">👤 <span class="user-name-display"></span></span>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="logoutUser()">Logout</button>
+      </div>
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-header" style="padding:1.5rem 0">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span>›</span>
+        <a href="listings.html">Listings</a><span>›</span>
+        <span>Property Detail</span>
+      </nav>
+    </div>
+  </div>
+
+  <main class="section" style="padding-top:1.5rem">
+    <div class="container">
+      <div id="detail-container">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== ENQUIRY MODAL ===== -->
+  <div class="modal-overlay" id="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enq-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="enq-modal-title">📩 Send an Enquiry</h2>
+        <button class="modal-close" onclick="closeModal('enquiry-modal')" aria-label="Close modal">✕</button>
+      </div>
+      <form id="enquiry-form" novalidate>
+        <div class="form-group">
+          <label for="enq-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="enq-name" class="form-control" placeholder="e.g. Thabo Khumalo" autocomplete="name" />
+          <span id="enq-name-msg" class="form-message" aria-live="polite"></span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="enq-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="enq-email" class="form-control" placeholder="you@example.com" autocomplete="email" />
+            <span id="enq-email-msg" class="form-message" aria-live="polite"></span>
+          </div>
+          <div class="form-group">
+            <label for="enq-phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="enq-phone" class="form-control" placeholder="0812345678" autocomplete="tel" />
+            <span id="enq-phone-msg" class="form-message" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="enq-message">Your Message <span class="req">*</span></label>
+          <textarea id="enq-message" class="form-control" placeholder="I am interested in this property and would like to know more about…"></textarea>
+          <span id="enq-message-msg" class="form-message" aria-live="polite"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Send Enquiry →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== VIEWING BOOKING MODAL ===== -->
+  <div class="modal-overlay" id="viewing-modal" role="dialog" aria-modal="true" aria-labelledby="view-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="view-modal-title">📅 Book a Viewing</h2>
+        <button class="modal-close" onclick="closeModal('viewing-modal')" aria-label="Close modal">✕</button>
+      </div>
+      <form id="viewing-form" novalidate>
+        <div class="form-group">
+          <label for="view-date">Preferred Date <span class="req">*</span></label>
+          <input type="date" id="view-date" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="view-time">Preferred Time <span class="req">*</span></label>
+          <select id="view-time" class="form-control">
+            <option value="">Select a time slot</option>
+            <option>09:00 – 10:00</option>
+            <option>10:00 – 11:00</option>
+            <option>11:00 – 12:00</option>
+            <option>14:00 – 15:00</option>
+            <option>15:00 – 16:00</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="view-notes">Special Requests (optional)</label>
+          <textarea id="view-notes" class="form-control" rows="3" placeholder="Any accessibility needs or questions for the agent…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-accent btn-block">Confirm Booking →</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="padding:1.2rem 0;text-align:center;border-top:none">
+      <p>&copy; 2026 EstateHub – ITFFA4 Milestone 2</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landlord Portal – EstateHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏡</span>Estate<span class="accent">Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="landlord.html" class="active">My Portal</a></li>
+      </ul>
+      <div class="nav-auth">
+        <span style="color:rgba(255,255,255,0.7);font-size:0.85rem">🏠 Landlord Portal</span>
+        <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="logoutUser()">Logout</button>
+      </div>
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" role="navigation" aria-label="Landlord navigation">
+      <div class="landlord-nav-link admin-nav-link active" data-section="dashboard">
+        <span class="icon">📊</span> Dashboard
+      </div>
+      <div class="nav-section-title">My Listings</div>
+      <div class="landlord-nav-link admin-nav-link" data-section="listings">
+        <span class="icon">🏠</span> All My Listings
+      </div>
+      <div class="landlord-nav-link admin-nav-link" data-section="add-listing">
+        <span class="icon">➕</span> Add Listing
+      </div>
+      <div class="nav-section-title">Activity</div>
+      <div class="landlord-nav-link admin-nav-link" data-section="enquiries">
+        <span class="icon">📩</span> Enquiries
+      </div>
+      <div class="landlord-nav-link admin-nav-link" data-section="bookings">
+        <span class="icon">📅</span> Viewing Bookings
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="landlord-main" id="landlord-main">
+      <div class="admin-header">
+        <h1 id="landlord-page-title">Dashboard</h1>
+        <button class="btn btn-accent btn-sm" onclick="renderLandlordSection('add-listing')">+ Add Listing</button>
+      </div>
+      <div id="landlord-content"><!-- Populated by JS --></div>
+    </main>
+
+  </div>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

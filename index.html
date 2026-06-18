@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EstateHub – Find Your Dream Property in South Africa</title>
+  <meta name="description" content="EstateHub – browse, search and enquire about properties for sale and rent across South Africa." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">🏡</span>
+        Estate<span class="accent">Hub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="favourites.html">Favourites</a></li>
+        <li class="nav-admin-link" style="display:none"><a href="admin.html">Admin</a></li>
+        <li class="nav-agent-link" style="display:none"><a href="landlord.html">My Portal</a></li>
+        <li class="nav-buyer-link" style="display:none"><a href="#" onclick="openMyBookingsModal();return false">My Bookings</a></li>
+      </ul>
+      <div class="nav-auth hide-when-auth">
+        <a href="login.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5)">Log In</a>
+        <a href="register.html" class="btn btn-accent btn-sm">Register</a>
+      </div>
+      <div class="nav-auth show-when-auth" style="display:none">
+        <span style="color:rgba(255,255,255,0.8);font-size:0.88rem">👤 <span class="user-name-display"></span></span>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="logoutUser()">Logout</button>
+      </div>
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">South Africa's #1 Property Portal</span>
+        <h1 id="hero-heading">Find Your Perfect <span class="accent">Home</span> in South Africa</h1>
+        <p>Search thousands of properties for sale and rent. Connect with trusted agents and book viewings online.</p>
+
+        <!-- Hero Search Form -->
+        <form id="hero-search-form" novalidate>
+          <div class="search-box">
+            <div class="search-field">
+              <label for="hs-city">City</label>
+              <select id="hs-city" name="city">
+                <option value="">All Cities</option>
+                <option value="Johannesburg">Johannesburg</option>
+                <option value="Pretoria">Pretoria</option>
+                <option value="Midrand">Midrand</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="hs-type">Property Type</label>
+              <select id="hs-type" name="type">
+                <option value="">All Types</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="townhouse">Townhouse</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="hs-status">Listing Status</label>
+              <select id="hs-status" name="status">
+                <option value="">Buy or Rent</option>
+                <option value="for-sale">For Sale</option>
+                <option value="for-rent">For Rent</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="hs-budget">Max Budget (R)</label>
+              <input type="number" id="hs-budget" name="maxPrice" placeholder="e.g. 3000000" />
+            </div>
+            <button type="submit" class="btn btn-accent btn-lg">🔍 Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS BAR ===== -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stat-item">
+        <div class="num"><span class="count-up" data-target="1248" data-suffix="+">0</span></div>
+        <div class="label">Active Listings</div>
+      </div>
+      <div class="stat-item">
+        <div class="num"><span class="count-up" data-target="342" data-suffix="+">0</span></div>
+        <div class="label">Properties Sold</div>
+      </div>
+      <div class="stat-item">
+        <div class="num"><span class="count-up" data-target="54">0</span></div>
+        <div class="label">Expert Agents</div>
+      </div>
+      <div class="stat-item">
+        <div class="num"><span class="count-up" data-target="8900" data-suffix="+">0</span></div>
+        <div class="label">Happy Clients</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURED PROPERTIES ===== -->
+  <section class="section" aria-labelledby="featured-heading">
+    <div class="container">
+      <header class="section-header">
+        <h2 id="featured-heading">Featured Properties</h2>
+        <div class="section-divider"></div>
+        <p>Handpicked listings selected by our expert agents</p>
+      </header>
+      <div id="featured-properties" class="properties-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+      <div class="text-center mt-4">
+        <a href="listings.html" class="btn btn-primary btn-lg">View All Listings →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section-alt" aria-labelledby="how-heading">
+    <div class="container">
+      <header class="section-header">
+        <h2 id="how-heading">How It Works</h2>
+        <div class="section-divider"></div>
+      </header>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center">
+        <article>
+          <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+          <h3 style="margin-bottom:0.5rem">1. Search</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">Use our powerful filters to find properties matching your exact needs.</p>
+        </article>
+        <article>
+          <div style="font-size:3rem;margin-bottom:1rem">📋</div>
+          <h3 style="margin-bottom:0.5rem">2. Compare</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">Save favourites and compare properties side by side with detailed info.</p>
+        </article>
+        <article>
+          <div style="font-size:3rem;margin-bottom:1rem">📅</div>
+          <h3 style="margin-bottom:0.5rem">3. Book Viewing</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">Request a viewing slot directly with the listing agent online.</p>
+        </article>
+        <article>
+          <div style="font-size:3rem;margin-bottom:1rem">🏠</div>
+          <h3 style="margin-bottom:0.5rem">4. Move In</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">Complete the deal with help from our dedicated agents. Welcome home!</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand footer-col">
+          <a href="index.html" class="nav-brand" style="font-size:1.3rem">🏡 Estate<span class="accent">Hub</span></a>
+          <p>South Africa's trusted real estate portal. Connecting buyers, renters, and agents since 2020.</p>
+        </div>
+        <nav class="footer-col" aria-label="Quick links">
+          <h4>Quick Links</h4>
+          <a href="listings.html">Browse Listings</a>
+          <a href="listings.html?status=for-sale">Properties for Sale</a>
+          <a href="listings.html?status=for-rent">Properties for Rent</a>
+          <a href="favourites.html">My Favourites</a>
+        </nav>
+        <nav class="footer-col" aria-label="Account links">
+          <h4>Account</h4>
+          <a href="login.html">Login</a>
+          <a href="register.html">Register</a>
+          <a href="admin.html">Agent Portal</a>
+        </nav>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="#">📧 info@estatehub.co.za</a>
+          <a href="#">📞 +27 12 345 6789</a>
+          <a href="#">📍 Sandton, Johannesburg</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 EstateHub (Pty) Ltd. ITFFA4 – Milestone 2 Project. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – EstateHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏡</span>Estate<span class="accent">Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="favourites.html">Favourites</a></li>
+        <li><a href="admin.html" class="active">Admin</a></li>
+      </ul>
+      <div class="nav-auth">
+        <span style="color:rgba(255,255,255,0.7);font-size:0.85rem">🔐 Admin Portal</span>
+        <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="clearStoredUser();window.location.href='index.html'">← Exit</button>
+      </div>
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" role="navigation" aria-label="Admin navigation">
+      <div class="admin-nav-link active" data-section="dashboard">
+        <span class="icon">📊</span> Dashboard
+      </div>
+      <div class="nav-section-title">Listings</div>
+      <div class="admin-nav-link" data-section="listings">
+        <span class="icon">🏠</span> All Listings
+      </div>
+      <div class="admin-nav-link" data-section="add-listing">
+        <span class="icon">➕</span> Add Listing
+      </div>
+      <div class="nav-section-title">Users</div>
+      <div class="admin-nav-link" data-section="enquiries">
+        <span class="icon">📩</span> Enquiries
+      </div>
+      <div class="admin-nav-link" data-section="bookings">
+        <span class="icon">📅</span> Bookings
+      </div>
+      <div class="admin-nav-link" data-section="users">
+        <span class="icon">👥</span> Users
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main" id="admin-main">
+      <div class="admin-header">
+        <h1 id="admin-page-title">Dashboard</h1>
+        <div style="display:flex;gap:0.5rem">
+          <button class="btn btn-outline btn-sm" onclick="showToast('Database backup started','success')">💾 Backup DB</button>
+          <button class="btn btn-accent btn-sm" onclick="renderAdminSection('add-listing')">+ Add Listing</button>
+        </div>
+      </div>
+      <div id="admin-content"><!-- Populated by JS --></div>
+    </main>
+
+  </div>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

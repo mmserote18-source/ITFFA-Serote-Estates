@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – EstateHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card" style="max-width:520px">
+      <a href="index.html" class="nav-brand" style="color:var(--primary);font-size:1.3rem;margin-bottom:1.5rem;display:inline-flex">
+        🏡 Estate<span class="accent" style="color:var(--accent)">Hub</span>
+      </a>
+      <h1>Create an Account</h1>
+      <p class="subtitle">Register to save properties, submit enquiries and book viewings.</p>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="reg-name" class="form-control" placeholder="e.g. Naledi Sithole" autocomplete="name" required />
+          <span id="reg-name-msg" class="form-message" aria-live="polite"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="reg-email" class="form-control" placeholder="you@example.com" autocomplete="email" required />
+            <span id="reg-email-msg" class="form-message" aria-live="polite"></span>
+          </div>
+          <div class="form-group">
+            <label for="reg-phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="reg-phone" class="form-control" placeholder="0812345678" autocomplete="tel" required />
+            <span id="reg-phone-msg" class="form-message" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-password">Password <span class="req">*</span></label>
+            <input type="password" id="reg-password" class="form-control" placeholder="At least 8 characters" autocomplete="new-password" required />
+            <span id="pw-strength" style="font-size:0.78rem;display:block;margin-top:0.25rem"></span>
+            <span id="reg-password-msg" class="form-message" aria-live="polite"></span>
+          </div>
+          <div class="form-group">
+            <label for="reg-confirm">Confirm Password <span class="req">*</span></label>
+            <input type="password" id="reg-confirm" class="form-control" placeholder="Repeat your password" autocomplete="new-password" required />
+            <span id="reg-confirm-msg" class="form-message" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-role">Account Type</label>
+          <select id="reg-role" class="form-control">
+            <option value="user">Buyer / Tenant</option>
+            <option value="agent">Agent / Landlord</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="display:flex;align-items:flex-start;gap:0.5rem">
+          <input type="checkbox" id="reg-terms" style="margin-top:3px;flex-shrink:0" />
+          <label for="reg-terms" style="font-size:0.85rem;cursor:pointer">
+            I agree to the <a href="#" style="color:var(--primary-light)">Terms &amp; Conditions</a> and <a href="#" style="color:var(--primary-light)">Privacy Policy</a>
+          </label>
+        </div>
+        <span id="reg-terms-msg" class="form-message" style="display:block;margin-top:-0.5rem;margin-bottom:1rem" aria-live="polite"></span>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account →</button>
+      </form>
+
+      <div class="auth-divider"><span>or</span></div>
+      <p class="auth-switch">Already have an account? <a href="login.html">Log in here</a></p>
+      <p class="auth-switch" style="margin-top:0.5rem"><a href="index.html">← Back to Home</a></p>
+    </div>
+  </div>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

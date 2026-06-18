@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Favourites – EstateHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand"><span class="brand-icon">🏡</span>Estate<span class="accent">Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="favourites.html" class="active">Favourites</a></li>
+        <li class="nav-admin-link" style="display:none"><a href="admin.html">Admin</a></li>
+        <li class="nav-agent-link" style="display:none"><a href="landlord.html">My Portal</a></li>
+        <li class="nav-buyer-link" style="display:none"><a href="#" onclick="openMyBookingsModal();return false">My Bookings</a></li>
+      </ul>
+      <div class="nav-auth hide-when-auth">
+        <a href="login.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5)">Log In</a>
+        <a href="register.html" class="btn btn-accent btn-sm">Register</a>
+      </div>
+      <div class="nav-auth show-when-auth" style="display:none">
+        <span style="color:rgba(255,255,255,0.8);font-size:0.88rem">👤 <span class="user-name-display"></span></span>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="logoutUser()">Logout</button>
+      </div>
+      <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>❤️ My Saved Properties</h1>
+      <p>Properties you have saved to your account</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span>›</span><span>Favourites</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div id="favourites-grid" class="properties-grid"><!-- Populated by JS --></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="padding:1.2rem 0;text-align:center;border-top:none">
+      <p>&copy; 2026 EstateHub – ITFFA4 Milestone 2</p>
+    </div>
+  </footer>
+
+  <div id="toast-container" aria-live="polite"></div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
