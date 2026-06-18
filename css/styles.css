@@ -112,6 +112,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   height: 64px;
+  position: relative;
 }
 .nav-brand {
   display: flex;
@@ -125,7 +126,17 @@ ul { list-style: none; }
 }
 .nav-brand .brand-icon { font-size: 1.1rem; opacity: 0.75; }
 .nav-brand span.accent { color: var(--brass-l); font-weight: 400; }
-.nav-links { display: flex; align-items: center; gap: 0.1rem; flex: 1; justify-content: center; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Push right-side elements to the far right */
+.navbar .notif-bell-wrap,
+.navbar .nav-auth.hide-when-auth { margin-left: auto; }
 .nav-links a {
   color: rgba(255,255,255,0.62);
   padding: 0.38rem 0.8rem;
@@ -973,8 +984,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   /* Hide navbar auth (username/logout/login/register) — drawer handles it on mobile */
   .navbar .nav-auth { display: none !important; }
   .hamburger { display: flex; }
-  /* Push bell + hamburger to the right, together */
-  .navbar .notif-bell-wrap { margin-left: auto; margin-right: 0.4rem; }
+  /* Keep bell snug against hamburger on mobile */
+  .navbar .notif-bell-wrap { margin-right: 0.4rem; }
+  .navbar .nav-auth.hide-when-auth { margin-left: 0; }
   .hero { padding: 3.5rem 0 3rem; }
   .search-box { grid-template-columns: 1fr; padding: 1rem; }
   .stats-bar .container { gap: 2rem; }
