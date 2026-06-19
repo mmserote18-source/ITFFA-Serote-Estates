@@ -1,11 +1,6 @@
-﻿/**
- * Serote Estates – Main JavaScript
- * Frontend connected to Node.js / MySQL API
- */
+﻿// Serote Estates – main JS
 
-// =============================================================
-// 1. DATA & STATE
-// =============================================================
+// --- Data & state ---
 let PROPERTIES = [];
 
 const FILTER_FIELD_MAP = {
@@ -62,9 +57,7 @@ async function syncFavouritesFromApi() {
   saveState();
 }
 
-// =============================================================
-// 2. UTILITY FUNCTIONS
-// =============================================================
+// --- Utility functions ---
 function formatPrice(price, status) {
   if (status === 'for-rent') return `R ${price.toLocaleString()}<span class="period">/month</span>`;
   return `R ${(price / 1e6).toFixed(2)}m`;
@@ -122,9 +115,7 @@ function userRoleBadge(role) {
   return `<span class="badge ${cls}">${label}</span>`;
 }
 
-// =============================================================
-// 3. PROPERTY CARD BUILDER
-// =============================================================
+// --- Property card builder ---
 function buildPropertyCard(prop) {
   const fav = isFav(prop.id);
   return `
@@ -156,9 +147,7 @@ function buildPropertyCard(prop) {
     </article>`;
 }
 
-// =============================================================
-// 4. FAVOURITES TOGGLE
-// =============================================================
+// --- Favourites ---
 async function toggleFavourite(id) {
   const numId = Number(id);
 
@@ -204,9 +193,7 @@ function updateFavButtons(id) {
   });
 }
 
-// =============================================================
-// 5. HOME PAGE
-// =============================================================
+// --- Home page ---
 function initHomePage() {
   const featuredContainer = document.getElementById('featured-properties');
   if (!featuredContainer) return;
@@ -261,9 +248,7 @@ function initHomePage() {
   }
 }
 
-// =============================================================
-// 6. LISTINGS PAGE
-// =============================================================
+// --- Listings page ---
 function initListingsPage() {
   const grid = document.getElementById('listings-grid');
   if (!grid) return;
@@ -332,9 +317,7 @@ function renderListings() {
   attachFavListeners(grid);
 }
 
-// =============================================================
-// 7. PROPERTY DETAIL PAGE
-// =============================================================
+// --- Property detail page ---
 function renderPropertyNotFound(container) {
   document.title = 'Property Not Found – Serote Estates';
   if (document.getElementById('detail-title')) document.getElementById('detail-title').textContent = 'Property Not Found';
@@ -431,9 +414,7 @@ function getDetailPropertyId() {
   return parseInt(new URLSearchParams(window.location.search).get('id'), 10) || null;
 }
 
-// =============================================================
-// 8. ENQUIRY FORM
-// =============================================================
+// --- Enquiry form ---
 function initEnquiryForm() {
   const form = document.getElementById('enquiry-form');
   if (!form) return;
@@ -511,9 +492,7 @@ function setFieldValid(el) {
   el.classList.remove('error'); el.classList.add('valid');
 }
 
-// =============================================================
-// 9. VIEWING BOOKING FORM
-// =============================================================
+// --- Viewing booking form ---
 function initViewingForm() {
   const form = document.getElementById('viewing-form');
   if (!form) return;
@@ -552,9 +531,7 @@ function initViewingForm() {
   });
 }
 
-// =============================================================
-// 10. AUTH PAGES
-// =============================================================
+// --- Auth pages ---
 function initLoginForm() {
   const form = document.getElementById('login-form');
   if (!form) return;
@@ -690,9 +667,7 @@ function getPasswordStrength(pw) {
   return levels[score] || levels[0];
 }
 
-// =============================================================
-// 11. FAVOURITES PAGE
-// =============================================================
+// --- Favourites page ---
 async function initFavouritesPage() {
   const grid = document.getElementById('favourites-grid');
   if (!grid) return;
@@ -723,9 +698,7 @@ async function initFavouritesPage() {
   }
 }
 
-// =============================================================
-// 12. ADMIN PANEL
-// =============================================================
+// --- Admin panel ---
 function initAdminPanel() {
   const adminMain = document.querySelector('.admin-main');
   if (!adminMain) return;
@@ -1052,9 +1025,7 @@ function renderAddListingForm(container, onSuccess) {
   });
 }
 
-// =============================================================
-// 12b. LANDLORD PANEL
-// =============================================================
+// --- Landlord panel ---
 function initLandlordPanel() {
   const landlordMain = document.querySelector('.landlord-main');
   if (!landlordMain) return;
@@ -1218,9 +1189,7 @@ async function renderLandlordSection(section) {
   }
 }
 
-// =============================================================
-// 13. MODAL HELPERS
-// =============================================================
+// --- Modal helpers ---
 function openModal(id) {
   document.getElementById(id)?.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1238,9 +1207,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
 });
 
-// =============================================================
-// 14. NAV & HELPERS
-// =============================================================
+// --- Nav & auth helpers ---
 function initNav() {
   const hamburger = document.querySelector('.hamburger');
   if (!hamburger) return;
@@ -1338,9 +1305,7 @@ function applyAuthUI() {
   }
 }
 
-// =============================================================
-// 15b. NOTIFICATION BELL
-// =============================================================
+// --- Notification bell ---
 function injectNotificationBell() {
   const navContainer = document.querySelector('.navbar .container');
   if (!navContainer || navContainer.querySelector('.notif-bell-wrap')) return;
@@ -1485,9 +1450,7 @@ async function cancelMyBooking(id, btn) {
   }
 }
 
-// =============================================================
-// 15. BOOTSTRAP
-// =============================================================
+// --- Bootstrap ---
 async function bootstrap() {
   initNav();
   applyAuthUI();

@@ -18,7 +18,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// REST API
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
 app.use('/api/favourites', favouriteRoutes);
@@ -54,11 +53,9 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-// Serve frontend static files from project root
 const webRoot = path.join(__dirname, '..');
 app.use(express.static(webRoot));
 
-// SPA-style fallback for HTML pages
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
   const file = path.join(webRoot, req.path);

@@ -1,6 +1,4 @@
-﻿/**
- * Serote Estates API client
- */
+﻿// Serote Estates – API client
 function safeJsonParse(str, fallback) {
   try {
     return JSON.parse(str);
@@ -11,11 +9,9 @@ function safeJsonParse(str, fallback) {
 
 const API_BASE = (() => {
   const { hostname, port } = window.location;
-  // Local development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return `http://localhost:3000/api`;
   }
-  // Production on Railway
   return 'https://itffa4-propertywebsite-production.up.railway.app/api';
 })();
 

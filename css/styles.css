@@ -1,14 +1,10 @@
-﻿/* ===================================================
-   Serote Estates – Meridian Stylesheet
-   Direction: Highveld Night — deep navy hero,
-   brass accent, Fraunces display + DM Sans body
-   =================================================== */
+﻿/* Serote Estates – Styles */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-/* ---- Design Tokens ---- */
+/* Design tokens */
 :root {
-  /* Palette — Highveld Night */
+  /* Colours */
   --night:        #0C1824;
   --night-mid:    #1A3048;
   --chalk:        #F5F1EB;
@@ -23,7 +19,7 @@
   --sky:          #2E6DA4;
   --ink:          #1A1614;
 
-  /* Legacy aliases — used by inline styles & JS-generated HTML */
+  /* Aliases */
   --primary:       var(--night);
   --primary-light: var(--brass);
   --accent:        var(--brass);
@@ -51,7 +47,7 @@
   --max-width:    1280px;
 }
 
-/* ---- Reset & Base ---- */
+/* Reset & base */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body { font-family: var(--font-body); color: var(--ink); background: var(--chalk); line-height: 1.6; }
@@ -60,7 +56,7 @@ a:hover { color: var(--brass-d); }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 
-/* ---- Utilities ---- */
+/* Utilities */
 .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-center { text-align: center; }
@@ -72,7 +68,7 @@ ul { list-style: none; }
 .gap-1 { gap: 0.5rem; }
 .gap-2 { gap: 1rem; }
 
-/* ---- Buttons ---- */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -100,7 +96,7 @@ ul { list-style: none; }
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-danger:hover { background: #a02020; }
 
-/* ---- Navigation ---- */
+/* Navigation */
 .navbar {
   background: var(--night);
   position: sticky;
@@ -134,7 +130,7 @@ ul { list-style: none; }
   left: 50%;
   transform: translateX(-50%);
 }
-/* Push right-side elements to the far right */
+/* push right-side elements to the far right */
 .navbar .notif-bell-wrap,
 .navbar .nav-auth.hide-when-auth { margin-left: auto; }
 .nav-links a {
@@ -162,7 +158,7 @@ ul { list-style: none; }
 }
 .hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.85); border-radius: 2px; transition: all var(--transition); }
 
-/* ---- Hero ---- */
+/* Hero */
 .hero {
   background:
     linear-gradient(to bottom, rgba(12,24,36,0.72) 0%, rgba(12,24,36,0.58) 60%, rgba(12,24,36,0.80) 100%),
@@ -221,7 +217,7 @@ ul { list-style: none; }
   max-width: 540px;
 }
 
-/* ---- Search Box ---- */
+/* Search box */
 .search-box {
   background: var(--white);
   border: 1px solid var(--border);
@@ -258,7 +254,7 @@ ul { list-style: none; }
 .search-field select:focus,
 .search-field input:focus { outline: none; border-color: var(--brass); background: #fff; }
 
-/* ---- Stats Bar ---- */
+/* Stats bar */
 .stats-bar {
   background: var(--ink);
   padding: 1.5rem 0;
@@ -280,7 +276,7 @@ ul { list-style: none; }
   letter-spacing: 0.1em;
 }
 
-/* ---- Section Headings ---- */
+/* Section headings */
 .section { padding: 5rem 0; }
 .section-alt { background: var(--white); }
 .section-header { text-align: center; margin-bottom: 3rem; }
@@ -300,7 +296,7 @@ ul { list-style: none; }
   margin: 0.9rem auto 0;
 }
 
-/* ---- Property Cards ---- */
+/* Property cards */
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -397,7 +393,7 @@ ul { list-style: none; }
 .agent-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
 .agent-name { font-size: 0.75rem; font-weight: 500; color: var(--ink); }
 
-/* ---- Filter Bar ---- */
+/* Filter bar */
 .filter-bar {
   background: var(--white);
   border: 1px solid var(--border);
@@ -434,7 +430,7 @@ ul { list-style: none; }
 .filter-group { display: flex; flex-direction: column; }
 #results-count { margin-left: auto; font-size: 0.84rem; color: var(--stone); align-self: flex-end; }
 
-/* ---- Property Detail ---- */
+/* Property detail */
 .detail-gallery {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -487,7 +483,7 @@ ul { list-style: none; }
   margin-bottom: 1.2rem;
 }
 
-/* ---- Forms ---- */
+/* Forms */
 .form-group { margin-bottom: 1.1rem; }
 .form-group label { display: block; font-size: 0.79rem; font-weight: 500; color: var(--ink); margin-bottom: 0.35rem; }
 .form-group label .req { color: var(--danger); }
@@ -516,7 +512,7 @@ ul { list-style: none; }
 textarea.form-control { resize: vertical; min-height: 100px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-/* ---- Auth Pages ---- */
+/* Auth pages */
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -568,7 +564,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .auth-divider span { background: var(--white); padding: 0 0.75rem; position: relative; }
 .auth-switch { text-align: center; font-size: 0.85rem; color: var(--stone); margin-top: 1.2rem; }
 
-/* ---- Admin Panel ---- */
+/* Admin panel */
 .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
 .admin-sidebar { background: var(--ink); color: #fff; padding: 1.5rem 0; }
 .admin-sidebar .nav-section-title {
@@ -649,7 +645,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .badge-danger  { background: rgba(192,48,48,0.1); color: #961F1F; }
 .badge-info    { background: rgba(46,109,164,0.1); color: #1E5A8C; }
 
-/* ---- Modal ---- */
+/* Modal */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(12,24,36,0.52);
@@ -681,7 +677,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--stone); line-height: 1; }
 .modal-close:hover { color: var(--ink); }
 
-/* ---- Notification Bell ---- */
+/* Notification bell */
 .notif-bell-wrap { position: relative; }
 .notif-bell-btn {
   background: transparent;
@@ -742,7 +738,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .notif-time { font-size: 0.69rem; color: var(--stone); }
 .notif-empty { padding: 1.5rem; text-align: center; color: var(--stone); font-size: 0.85rem; }
 
-/* ---- Toast ---- */
+/* Toast notifications */
 #toast-container {
   position: fixed; bottom: 1.5rem; right: 1.5rem;
   z-index: 9999;
@@ -764,7 +760,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
 
-/* ---- Footer ---- */
+/* Footer */
 .footer { background: var(--ink); color: rgba(255,255,255,0.55); }
 .footer-main {
   padding: 3.5rem 0 2rem;
@@ -791,7 +787,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   color: rgba(255,255,255,0.22);
 }
 
-/* ---- Page Header ---- */
+/* Page header */
 .page-header {
   background:
     linear-gradient(to bottom, rgba(12,24,36,0.78) 0%, rgba(12,24,36,0.68) 100%),
@@ -821,7 +817,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .breadcrumb a:hover { color: var(--brass-l); }
 .breadcrumb span { color: rgba(255,255,255,0.28); }
 
-/* ---- Empty State ---- */
+/* Empty state */
 .empty-state { text-align: center; padding: 4rem 1rem; }
 .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
 .empty-state h2 {
@@ -833,7 +829,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .empty-state p { color: var(--stone); margin-bottom: 1.5rem; font-weight: 300; }
 
-/* ---- Agent Card ---- */
+/* Agent card */
 .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
 .agent-card {
   background: var(--white);
@@ -855,7 +851,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .agent-card .title { font-size: 0.77rem; color: var(--stone); margin-bottom: 0.75rem; }
 .agent-card .listing-count { font-size: 0.77rem; color: var(--brass); font-weight: 500; }
 
-/* ---- How It Works Steps ---- */
+/* How it works */
 .how-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -880,9 +876,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .how-step h3 { font-size: 0.97rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink); }
 .how-step p { font-size: 0.88rem; color: var(--stone); font-weight: 300; line-height: 1.6; }
 
-/* ============================
-   RESPONSIVE BREAKPOINTS
-   ============================ */
+/* Responsive */
 
 @media (max-width: 1024px) {
   .search-box { grid-template-columns: 1fr 1fr; }
@@ -893,7 +887,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   .admin-layout { grid-template-columns: 200px 1fr; }
 }
 
-/* ---- Slide-out Nav Drawer ---- */
+/* Slide-out nav drawer */
 .nav-drawer-overlay {
   position: fixed; inset: 0;
   background: rgba(12,24,36,0.6);
@@ -981,10 +975,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 
 @media (max-width: 768px) {
   .navbar .nav-links { display: none; }
-  /* Hide navbar auth (username/logout/login/register) — drawer handles it on mobile */
+  /* drawer handles auth on mobile */
   .navbar .nav-auth { display: none !important; }
   .hamburger { display: flex; }
-  /* Keep bell snug against hamburger on mobile */
+  /* keep bell next to hamburger */
   .navbar .notif-bell-wrap { margin-right: 0.4rem; }
   .navbar .nav-auth.hide-when-auth { margin-left: 0; }
   .hero { padding: 3.5rem 0 3rem; }
