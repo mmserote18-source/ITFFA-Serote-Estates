@@ -1,5 +1,5 @@
-/**
- * EstateHub – Main JavaScript
+﻿/**
+ * Serote Estates – Main JavaScript
  * Author: Milestone 2 – ITFFA4
  * Frontend connected to Node.js / MySQL API
  */
@@ -345,7 +345,7 @@ function renderListings() {
 // 7. PROPERTY DETAIL PAGE
 // =============================================================
 function renderPropertyNotFound(container) {
-  document.title = 'Property Not Found – EstateHub';
+  document.title = 'Property Not Found – Serote Estates';
   if (document.getElementById('detail-title')) document.getElementById('detail-title').textContent = 'Property Not Found';
   container.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
     <div class="icon">🏘️</div>
@@ -357,7 +357,7 @@ function renderPropertyNotFound(container) {
 
 function renderPropertyDetail(prop, container) {
   if (document.getElementById('detail-title')) document.getElementById('detail-title').textContent = prop.title;
-  document.title = `${prop.title} – EstateHub`;
+  document.title = `${prop.title} – Serote Estates`;
 
   const galleryImages = (prop.images?.length ? prop.images : [prop.image]).slice(0, 3);
   while (galleryImages.length < 3) galleryImages.push(prop.image);
@@ -544,7 +544,7 @@ function initViewingForm() {
         await api.bookViewing({
           propertyId,
           name: user?.name || 'Guest',
-          email: user?.email || 'guest@estatehub.co.za',
+          email: user?.email || 'guest@seroteestates.co.za',
           date,
           time,
           notes: document.getElementById('view-notes')?.value.trim() || null,
@@ -1272,7 +1272,7 @@ function initNav() {
 
   drawer.innerHTML = `
     <div class="nav-drawer-header">
-      <a href="index.html" class="nav-brand" style="font-size:1.35rem">Estate<span style="color:var(--brass-l);font-weight:400">Hub</span></a>
+      <a href="index.html" class="nav-brand" style="font-size:1.35rem">Serote<span style="color:var(--brass-l);font-weight:400"> Estates</span></a>
       <button class="nav-drawer-close" aria-label="Close menu">✕</button>
     </div>
     <nav class="nav-drawer-links">

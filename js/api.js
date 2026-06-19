@@ -1,5 +1,5 @@
-/**
- * EstateHub API client
+﻿/**
+ * Serote Estates API client
  */
 function safeJsonParse(str, fallback) {
   try {

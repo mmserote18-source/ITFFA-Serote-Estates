@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -71,7 +71,7 @@ app.get('*', (req, res, next) => {
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`EstateHub server running at http://localhost:${PORT}`);
+  console.log(`Serote Estates server running at http://localhost:${PORT}`);
   console.log(`API health check: http://localhost:${PORT}/api/health`);
 });
 
