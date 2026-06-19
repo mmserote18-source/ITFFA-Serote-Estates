@@ -1,7 +1,7 @@
 {
   "name": "estatehub-backend",
   "version": "1.0.0",
-  "description": "EstateHub REST API – ITFFA4 Milestone 2",
+  "description": "Serote Estates REST API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

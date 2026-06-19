@@ -17,3 +17,6 @@ npm-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Private credentials
+login-credentials.txt

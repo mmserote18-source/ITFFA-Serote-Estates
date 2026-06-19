@@ -1,6 +1,5 @@
 ﻿/**
  * Serote Estates – Main JavaScript
- * Author: Milestone 2 – ITFFA4
  * Frontend connected to Node.js / MySQL API
  */
 
@@ -17,14 +16,6 @@ const FILTER_FIELD_MAP = {
   'f-min-price': 'minPrice',
   'f-max-price': 'maxPrice',
 };
-
-function safeJsonParse(str, fallback) {
-  try {
-    return JSON.parse(str);
-  } catch {
-    return fallback;
-  }
-}
 
 const state = {
   favourites: safeJsonParse(localStorage.getItem('favourites') || '[]', []),
@@ -1511,7 +1502,7 @@ async function bootstrap() {
     }
   } catch {
     state.apiOnline = false;
-    console.warn('Backend unavailable – run: cd backend && npm start');
+    console.warn('Backend unavailable. Start the server to enable live data.');
   }
 
   initHomePage();
