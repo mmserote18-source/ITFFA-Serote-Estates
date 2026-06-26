@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- Top navigation bar — auth check and redirect happen in initAdminPanel() -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a href="index.html" class="nav-brand">Serote<span class="accent"> Estates</span></a>
@@ -27,9 +28,10 @@
     </div>
   </nav>
 
+  <!-- Two-column admin layout: sidebar nav + main content area -->
   <div class="admin-layout">
 
-    <!-- Sidebar -->
+    <!-- Sidebar — nav links switch sections without a page reload -->
     <aside class="admin-sidebar" role="navigation" aria-label="Admin navigation">
       <div class="admin-nav-link active" data-section="dashboard">
         <span class="icon">📊</span> Dashboard
@@ -53,7 +55,7 @@
       </div>
     </aside>
 
-    <!-- Main content -->
+    <!-- Main content — rendered dynamically by renderAdminDashboard() / renderAdminSection() -->
     <main class="admin-main" id="admin-main">
       <div class="admin-header">
         <h1 id="admin-page-title">Dashboard</h1>
@@ -62,7 +64,8 @@
           <button class="btn btn-accent btn-sm" onclick="renderAdminSection('add-listing')">+ Add Listing</button>
         </div>
       </div>
-      <div id="admin-content"><!-- filled in by JS --></div>
+      <!-- Content is injected here by JS -->
+      <div id="admin-content"></div>
     </main>
 
   </div>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <!-- Full-page centred auth card — no navbar on login/register pages to reduce distraction -->
   <div class="auth-page">
     <div class="auth-card">
       <a href="index.html" class="nav-brand" style="color:var(--night);margin-bottom:1.5rem;display:inline-flex">
@@ -17,10 +18,12 @@
       <h1>Welcome Back</h1>
       <p class="subtitle">Log in to access your saved properties and bookings.</p>
 
+      <!-- Login form — handled by initLoginForm() in main.js -->
 <form id="login-form" novalidate>
         <div class="form-group">
           <label for="login-email">Email Address</label>
           <input type="email" id="login-email" class="form-control" placeholder="you@example.com" autocomplete="email" required />
+          <!-- Validation messages are injected here by setFieldError() -->
           <span id="login-email-msg" class="form-message" aria-live="polite"></span>
         </div>
         <div class="form-group">
@@ -29,6 +32,7 @@
           <span id="login-pw-msg" class="form-message" aria-live="polite"></span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;font-size:0.85rem">
+          <!-- "Remember me" stores the user in localStorage instead of sessionStorage -->
           <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer">
             <input type="checkbox" id="login-remember" /> Remember me
           </label>

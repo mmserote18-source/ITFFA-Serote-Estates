@@ -1,3 +1,4 @@
+// Favourites routes: list saved properties and toggle save/unsave for authenticated users.
 const express = require('express');
 const pool = require('../config/db');
 const { authRequired } = require('../middleware/auth');
@@ -5,8 +6,11 @@ const { formatProperty, PROPERTY_SELECT } = require('../utils/properties');
 
 const router = express.Router();
 
+// All favourite endpoints require an authenticated user.
 router.use(authRequired);
 
+// GET /api/favourites
+// Returns full property objects (not just IDs) so the favourites page can render cards directly.
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -24,11 +28,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST /api/favourites/:propertyId
+// Toggles the saved state: inserts if not yet saved, deletes if already saved.
+// Returns { saved: boolean } so the client can update the heart icon without a follow-up GET.
 router.post('/:propertyId', async (req, res) => {
   try {
     const propertyId = Number(req.params.propertyId);
     const userId = req.user.id;
 
+    // Reject favouriting archived listings.
     const [prop] = await pool.query(
       `SELECT property_id FROM properties WHERE property_id = ? AND status NOT IN ('archived')`,
       [propertyId]

@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Title is overwritten by renderPropertyDetail() once the property data loads -->
   <title id="detail-title">Property Detail – Serote Estates</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,6 +11,7 @@
 </head>
 <body>
 
+  <!-- Navigation -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a href="index.html" class="nav-brand">Serote<span class="accent"> Estates</span></a>
@@ -33,6 +35,7 @@
     </div>
   </nav>
 
+  <!-- Slim breadcrumb header — no property title here since it loads asynchronously -->
   <div class="page-header" style="padding:1.5rem 0">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -43,6 +46,7 @@
     </div>
   </div>
 
+  <!-- Detail container — gallery, info, and sidebar card injected by renderPropertyDetail() -->
   <main class="section" style="padding-top:1.5rem">
     <div class="container">
       <div id="detail-container">
@@ -51,13 +55,14 @@
     </div>
   </main>
 
-  <!-- Enquiry modal -->
+  <!-- Enquiry modal — opened by the "Send Enquiry" button in the sidebar card -->
   <div class="modal-overlay" id="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enq-modal-title">
     <div class="modal">
       <div class="modal-header">
         <h2 id="enq-modal-title">📩 Send an Enquiry</h2>
         <button class="modal-close" onclick="closeModal('enquiry-modal')" aria-label="Close modal">✕</button>
       </div>
+      <!-- Form handled by initEnquiryForm() -->
       <form id="enquiry-form" novalidate>
         <div class="form-group">
           <label for="enq-name">Full Name <span class="req">*</span></label>
@@ -86,13 +91,14 @@
     </div>
   </div>
 
-  <!-- Viewing booking modal -->
+  <!-- Viewing booking modal — opened by the "Book Viewing" button in the sidebar card -->
   <div class="modal-overlay" id="viewing-modal" role="dialog" aria-modal="true" aria-labelledby="view-modal-title">
     <div class="modal">
       <div class="modal-header">
         <h2 id="view-modal-title">📅 Book a Viewing</h2>
         <button class="modal-close" onclick="closeModal('viewing-modal')" aria-label="Close modal">✕</button>
       </div>
+      <!-- Form handled by initViewingForm(); min date is set dynamically to today -->
       <form id="viewing-form" novalidate>
         <div class="form-group">
           <label for="view-date">Preferred Date <span class="req">*</span></label>

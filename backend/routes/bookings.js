@@ -1,9 +1,13 @@
+// Viewing booking routes: submit, list own bookings, and cancel.
 const express = require('express');
 const pool = require('../config/db');
 const { optionalAuth, authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// POST /api/bookings
+// optionalAuth is used so guests can book viewings without an account;
+// buyer_id is stored when available to link the booking to a user account.
 router.post('/', optionalAuth, async (req, res) => {
   try {
     const { propertyId, name, email, phone, date, time, notes } = req.body;
@@ -12,6 +16,7 @@ router.post('/', optionalAuth, async (req, res) => {
       return res.status(400).json({ error: 'Property, name, email, date and time are required' });
     }
 
+    // Verify the property exists before creating the booking.
     const [prop] = await pool.query(
       `SELECT property_id, agent_id, title FROM properties WHERE property_id = ?`,
       [propertyId]
@@ -27,6 +32,7 @@ router.post('/', optionalAuth, async (req, res) => {
       [propertyId, buyerId, name.trim(), email.trim(), phone?.trim() || null, date, time, notes?.trim() || null]
     );
 
+    // Alert the responsible agent so they can confirm or reject the booking.
     await pool.query(
       `INSERT INTO notifications (user_id, type, title, body, related_id)
        VALUES (?, 'booking', ?, ?, ?)`,
@@ -45,6 +51,8 @@ router.post('/', optionalAuth, async (req, res) => {
   }
 });
 
+// GET /api/bookings/my
+// Returns all bookings belonging to the authenticated buyer.
 router.get('/my', authRequired, async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -64,6 +72,8 @@ router.get('/my', authRequired, async (req, res) => {
   }
 });
 
+// PATCH /api/bookings/:id/cancel
+// Buyers can cancel their own bookings; notifies the agent when they do.
 router.patch('/:id/cancel', authRequired, async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -75,6 +85,7 @@ router.patch('/:id/cancel', authRequired, async (req, res) => {
     );
     if (!rows.length) return res.status(404).json({ error: 'Booking not found' });
     const booking = rows[0];
+    // Only the buyer who made the booking may cancel it.
     if (booking.buyer_id !== req.user.id) return res.status(403).json({ error: 'Not your booking' });
     if (booking.status === 'cancelled') return res.status(400).json({ error: 'Already cancelled' });
 

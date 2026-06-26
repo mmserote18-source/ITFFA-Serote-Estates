@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <!-- Full-page centred card — same auth-page layout as login.html -->
   <div class="auth-page">
     <div class="auth-card" style="max-width:520px">
       <a href="index.html" class="nav-brand" style="color:var(--night);margin-bottom:1.5rem;display:inline-flex">
@@ -17,6 +18,7 @@
       <h1>Create an Account</h1>
       <p class="subtitle">Register to save properties, submit enquiries and book viewings.</p>
 
+      <!-- Registration form — handled by initRegisterForm() in main.js -->
       <form id="register-form" novalidate>
         <div class="form-group">
           <label for="reg-name">Full Name <span class="req">*</span></label>
@@ -32,6 +34,7 @@
           </div>
           <div class="form-group">
             <label for="reg-phone">Phone Number <span class="req">*</span></label>
+            <!-- SA phone numbers must match /^(\+27|0)[6-8][0-9]{8}$/ validated in JS -->
             <input type="tel" id="reg-phone" class="form-control" placeholder="0812345678" autocomplete="tel" required />
             <span id="reg-phone-msg" class="form-message" aria-live="polite"></span>
           </div>
@@ -41,6 +44,7 @@
           <div class="form-group">
             <label for="reg-password">Password <span class="req">*</span></label>
             <input type="password" id="reg-password" class="form-control" placeholder="At least 8 characters" autocomplete="new-password" required />
+            <!-- Live password strength indicator updated on every keystroke by initRegisterForm() -->
             <span id="pw-strength" style="font-size:0.78rem;display:block;margin-top:0.25rem"></span>
             <span id="reg-password-msg" class="form-message" aria-live="polite"></span>
           </div>
@@ -51,6 +55,7 @@
           </div>
         </div>
 
+        <!-- Account type — agents get access to the landlord portal after login -->
         <div class="form-group">
           <label for="reg-role">Account Type</label>
           <select id="reg-role" class="form-control">
@@ -65,6 +70,7 @@
             I agree to the <a href="#" style="color:var(--primary-light)">Terms &amp; Conditions</a> and <a href="#" style="color:var(--primary-light)">Privacy Policy</a>
           </label>
         </div>
+        <!-- Error message for unchecked terms is injected here -->
         <span id="reg-terms-msg" class="form-message" style="display:block;margin-top:-0.5rem;margin-bottom:1rem" aria-live="polite"></span>
 
         <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account →</button>

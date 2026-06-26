@@ -1,4 +1,5 @@
-﻿require('dotenv').config();
+// Express entry point: mounts all API routes and serves the frontend as a SPA.
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
 app.use('/api/favourites', favouriteRoutes);
@@ -26,6 +28,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+// GET /api/stats — public counts shown on the home page hero.
 app.get('/api/stats', async (_req, res) => {
   try {
     const [[active]]  = await pool.query(`SELECT COUNT(*) AS n FROM properties WHERE status IN ('for-sale','for-rent')`);
@@ -37,6 +40,7 @@ app.get('/api/stats', async (_req, res) => {
   }
 });
 
+// GET /api/health — checked by the frontend on startup to decide whether to use live or cached data.
 app.get('/api/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');
@@ -53,9 +57,12 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+// Serve the static frontend files from the repo root.
 const webRoot = path.join(__dirname, '..');
 app.use(express.static(webRoot));
 
+// SPA fallback: all non-API, non-asset requests return index.html so client-side
+// routing works when the user navigates directly to a page URL.
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
   const file = path.join(webRoot, req.path);
@@ -72,6 +79,7 @@ const server = app.listen(PORT, () => {
   console.log(`API health check: http://localhost:${PORT}/api/health`);
 });
 
+// Provide a clear message when the port is already taken, e.g. a previous instance still running.
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
     console.error(`Port ${PORT} is already in use. Stop the other process or change PORT in backend/.env`);

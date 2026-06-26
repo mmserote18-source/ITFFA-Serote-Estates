@@ -1,8 +1,11 @@
-﻿// Serote Estates – main JS
+// Serote Estates – main JS
+// Single-file frontend controller. Runs on every page; each init* function
+// checks for its own DOM element before doing any work, so unused sections are no-ops.
 
 // --- Data & state ---
-let PROPERTIES = [];
+let PROPERTIES = []; // Full property list loaded from the API on boot.
 
+// Maps HTML element IDs to the API filter parameter names.
 const FILTER_FIELD_MAP = {
   'f-city': 'city',
   'f-type': 'type',
@@ -16,7 +19,7 @@ const state = {
   favourites: safeJsonParse(localStorage.getItem('favourites') || '[]', []),
   currentFilters: { city: '', type: '', status: '', minPrice: '', maxPrice: '', beds: '', search: '' },
   currentUser: null,
-  apiOnline: false,
+  apiOnline: false, // Set to true after a successful /api/health check on boot.
 };
 
 function saveState() {
@@ -27,6 +30,7 @@ function getStoredUser() {
   return safeJsonParse(sessionStorage.getItem('user') || localStorage.getItem('user') || 'null', null);
 }
 
+// Stores the user in sessionStorage by default; localStorage when "remember me" is checked.
 function storeUser(user, remember = false) {
   sessionStorage.removeItem('user');
   localStorage.removeItem('user');
@@ -50,6 +54,7 @@ async function loadAllProperties() {
   PROPERTIES = await api.getProperties();
 }
 
+// Replaces the locally cached favourite IDs with the server's list after login.
 async function syncFavouritesFromApi() {
   if (!state.currentUser?.token) return;
   const favs = await api.getFavourites();
@@ -58,17 +63,21 @@ async function syncFavouritesFromApi() {
 }
 
 // --- Utility functions ---
+
+// Returns a formatted price string with the rent period label when applicable.
 function formatPrice(price, status) {
   if (status === 'for-rent') return `R ${price.toLocaleString()}<span class="period">/month</span>`;
   return `R ${(price / 1e6).toFixed(2)}m`;
 }
 
+// Plain-text version used in tables and tooltips where HTML tags would render literally.
 function formatPricePlain(price, status) {
   return status === 'for-rent' ? `R ${price.toLocaleString()}/mo` : `R ${(price / 1e6).toFixed(2)}m`;
 }
 
 function isFav(id) { return state.favourites.includes(Number(id)); }
 
+// Displays a self-dismissing toast notification at the bottom-right of the screen.
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -151,6 +160,7 @@ function buildPropertyCard(prop) {
 async function toggleFavourite(id) {
   const numId = Number(id);
 
+  // When logged in and the API is reachable, persist the favourite server-side.
   if (state.currentUser?.token && state.apiOnline) {
     try {
       const result = await api.toggleFavourite(numId);
@@ -169,6 +179,7 @@ async function toggleFavourite(id) {
     }
   }
 
+  // Offline / guest fallback: store in localStorage only.
   if (isFav(numId)) {
     state.favourites = state.favourites.filter(f => f !== numId);
     showToast('Removed from favourites', 'info');
@@ -180,11 +191,13 @@ async function toggleFavourite(id) {
   updateFavButtons(id);
 }
 
+// Updates all heart buttons for a given property ID on the current page.
 function updateFavButtons(id) {
   const numId = Number(id);
   document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
     const saved = isFav(numId);
     btn.classList.toggle('active', saved);
+    // The detail page button has a text label; card buttons use emoji only.
     if (btn.textContent.trim().includes('Saved') || btn.textContent.trim().includes('Save to Favourites')) {
       btn.textContent = saved ? '❤️ Saved' : '🤍 Save to Favourites';
     } else {
@@ -204,6 +217,7 @@ function initHomePage() {
     : `<div class="empty-state" style="grid-column:1/-1"><p>No featured properties yet.</p></div>`;
   attachFavListeners(featuredContainer);
 
+  // Hero search redirects to the listings page with filter params in the query string.
   const heroSearch = document.getElementById('hero-search-form');
   if (heroSearch) {
     heroSearch.addEventListener('submit', e => {
@@ -221,6 +235,7 @@ function initHomePage() {
     });
   }
 
+  // Animate the stats counters from 0 to their live values.
   const statEls = {
     active: document.getElementById('stat-active'),
     sold:   document.getElementById('stat-sold'),
@@ -253,6 +268,7 @@ function initListingsPage() {
   const grid = document.getElementById('listings-grid');
   if (!grid) return;
 
+  // Pre-populate filters from URL query parameters (e.g. from the hero search form).
   const params = new URLSearchParams(window.location.search);
   const urlFilterMap = { city: 'f-city', type: 'f-type', status: 'f-status', maxPrice: 'f-max-price', minPrice: 'f-min-price' };
   Object.entries(urlFilterMap).forEach(([key, fieldId]) => {
@@ -265,6 +281,7 @@ function initListingsPage() {
 
   renderListings();
 
+  // Wire up filter inputs; text inputs are debounced to avoid filtering on every keystroke.
   Object.entries(FILTER_FIELD_MAP).forEach(([fieldId, filterKey]) => {
     const el = document.getElementById(fieldId);
     if (!el) return;
@@ -288,6 +305,7 @@ function initListingsPage() {
   if (sortEl) sortEl.addEventListener('change', () => renderListings());
 }
 
+// Client-side filter and sort over the in-memory PROPERTIES array.
 function renderListings() {
   const grid = document.getElementById('listings-grid');
   const countEl = document.getElementById('results-count');
@@ -333,6 +351,7 @@ function renderPropertyDetail(prop, container) {
   if (document.getElementById('detail-title')) document.getElementById('detail-title').textContent = prop.title;
   document.title = `${prop.title} – Serote Estates`;
 
+  // Always show 3 gallery slots; repeat the primary image when fewer are available.
   const galleryImages = (prop.images?.length ? prop.images : [prop.image]).slice(0, 3);
   while (galleryImages.length < 3) galleryImages.push(prop.image);
 
@@ -394,6 +413,7 @@ async function initDetailPage() {
   let prop = null;
   if (state.apiOnline) {
     try {
+      // Fetch from API to get all images; fall back to the in-memory list on failure.
       prop = await api.getProperty(id);
     } catch {
       prop = PROPERTIES.find(p => p.id === id) || null;
@@ -410,6 +430,7 @@ async function initDetailPage() {
   renderPropertyDetail(prop, container);
 }
 
+// Reads the property ID from the URL for use in forms on the detail page.
 function getDetailPropertyId() {
   return parseInt(new URLSearchParams(window.location.search).get('id'), 10) || null;
 }
@@ -466,6 +487,7 @@ function initEnquiryForm() {
     form.querySelectorAll('.form-control').forEach(el => el.classList.remove('valid', 'error'));
   });
 
+  // Validate each field immediately when the user leaves it.
   form.querySelectorAll('.form-control').forEach(el => {
     el.addEventListener('blur', () => validateFieldOnBlur(el));
   });
@@ -497,6 +519,7 @@ function initViewingForm() {
   const form = document.getElementById('viewing-form');
   if (!form) return;
 
+  // Prevent selecting past dates.
   const dateInput = document.getElementById('view-date');
   if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
 
@@ -651,6 +674,7 @@ function initRegisterForm() {
   });
 }
 
+// Scores password strength on four independent criteria, each worth one point.
 function getPasswordStrength(pw) {
   let score = 0;
   if (pw.length >= 8) score++;
@@ -675,10 +699,12 @@ async function initFavouritesPage() {
   let favProps = [];
   if (state.currentUser?.token && state.apiOnline) {
     try {
+      // Fetch from API so cross-device saves are reflected.
       favProps = await api.getFavourites();
       state.favourites = favProps.map(p => p.id);
       saveState();
     } catch {
+      // Fall back to the locally stored list if the API is unreachable.
       favProps = PROPERTIES.filter(p => isFav(p.id));
     }
   } else {
@@ -703,6 +729,7 @@ function initAdminPanel() {
   const adminMain = document.querySelector('.admin-main');
   if (!adminMain) return;
 
+  // Redirect non-admins away immediately; role check matches the token's embedded role.
   const user = getStoredUser();
   if (!user || user.role !== 'admin') {
     showToast('Admin access required. Please log in.', 'error');
@@ -832,6 +859,7 @@ async function renderAdminSection(section) {
         content.innerHTML = `<p style="color:var(--text-muted)">User management requires an admin account.</p>`;
         return;
       }
+      //builds user table in user managment
       const rows = await api.adminUsers();
       content.innerHTML = `<div style="overflow-x:auto"><table class="data-table">
         <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Status</th></tr></thead>
@@ -917,6 +945,7 @@ function renderEditListingForm(container, prop, onSuccess) {
   });
 }
 
+// Opens an inline modal showing the full enquiry and, for agents/admins, a reply textarea.
 function openEnquiryModal(e) {
   const existing = document.getElementById('enquiry-detail-modal');
   if (existing) existing.remove();
@@ -1030,6 +1059,7 @@ function initLandlordPanel() {
   const landlordMain = document.querySelector('.landlord-main');
   if (!landlordMain) return;
 
+  // Only agents may access the landlord portal.
   const user = getStoredUser();
   if (!user || user.role !== 'agent') {
     showToast('Landlord access required. Please log in as an agent.', 'error');
@@ -1104,6 +1134,7 @@ async function renderLandlordDashboard() {
         </tbody>
       </table>
       </div>`;
+    // Store in window so inline onclick handlers in the table rows can access them by index.
     window._dashEnquiries = enquiries;
     window._dashProps = properties;
   } catch (err) {
@@ -1199,10 +1230,12 @@ function closeModal(id) {
   document.body.style.overflow = '';
 }
 
+// Close any open modal when clicking the backdrop.
 document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id);
 });
 
+// Escape key closes all open modals.
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
 });
@@ -1212,7 +1245,7 @@ function initNav() {
   const hamburger = document.querySelector('.hamburger');
   if (!hamburger) return;
 
-  // Build drawer
+  // Build the slide-out mobile drawer dynamically so its auth state stays in sync.
   const overlay = document.createElement('div');
   overlay.className = 'nav-drawer-overlay';
 
@@ -1270,9 +1303,11 @@ function initNav() {
   hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelector('.nav-drawer-close').addEventListener('click', closeDrawer);
+  // Close the drawer when the user taps a link inside it.
   drawer.querySelectorAll('.nav-drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
 }
 
+// Attaches click handlers to all favourite buttons inside a container element.
 function attachFavListeners(container) {
   container.querySelectorAll('.fav-btn').forEach(btn => {
     btn.addEventListener('click', e => {
@@ -1287,6 +1322,7 @@ function debounce(fn, delay) {
   return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); };
 }
 
+// Shows/hides nav elements based on whether the user is logged in and their role.
 function applyAuthUI() {
   const user = getStoredUser();
   if (user) {
@@ -1306,6 +1342,7 @@ function applyAuthUI() {
 }
 
 // --- Notification bell ---
+// Injects the bell icon and dropdown into the navbar once per page load.
 function injectNotificationBell() {
   const navContainer = document.querySelector('.navbar .container');
   if (!navContainer || navContainer.querySelector('.notif-bell-wrap')) return;
@@ -1332,8 +1369,10 @@ function injectNotificationBell() {
     const dd = document.getElementById('notif-dropdown');
     const opening = !dd.classList.contains('open');
     dd.classList.toggle('open');
+    // Only fetch notifications when the dropdown is being opened.
     if (opening) loadNotifications();
   });
+  // Click outside the bell/dropdown closes it.
   document.addEventListener('click', e => {
     const dd = document.getElementById('notif-dropdown');
     if (dd && !wrap.contains(e.target)) dd.classList.remove('open');
@@ -1361,9 +1400,10 @@ async function loadNotifications() {
         <div class="notif-body">${n.body}</div>
         <div class="notif-time">${n.created_at}</div>
       </div>`).join('');
-  } catch { /* silent */ }
+  } catch { /* silent — badge simply stays at its previous value */ }
 }
 
+// Refreshes only the unread count, not the full list, for lightweight polling.
 async function refreshNotifBadge() {
   if (!state.apiOnline || !state.currentUser?.token) return;
   try {
@@ -1395,6 +1435,7 @@ async function markAllNotificationsRead() {
   } catch { /* silent */ }
 }
 
+// Opens a modal listing the current user's own viewing bookings with cancel buttons.
 async function openMyBookingsModal() {
   const existing = document.getElementById('my-bookings-modal');
   if (existing) existing.remove();
@@ -1442,6 +1483,7 @@ async function cancelMyBooking(id, btn) {
   try {
     await api.cancelBooking(id);
     showToast('Booking cancelled', 'info');
+    // Update the row in place rather than re-fetching the whole list.
     btn.closest('tr').querySelector('.badge').textContent = 'cancelled';
     btn.closest('tr').querySelector('.badge').className = 'badge';
     btn.remove();
@@ -1451,6 +1493,7 @@ async function cancelMyBooking(id, btn) {
 }
 
 // --- Bootstrap ---
+// Entry point: initialises the nav, checks the API, then activates each page module.
 async function bootstrap() {
   initNav();
   applyAuthUI();
@@ -1468,6 +1511,7 @@ async function bootstrap() {
     console.warn('Backend unavailable. Start the server to enable live data.');
   }
 
+  // Each init function is a no-op on pages that don't contain its root element.
   initHomePage();
   initListingsPage();
   await initDetailPage();
@@ -1479,6 +1523,7 @@ async function bootstrap() {
   initAdminPanel();
   initLandlordPanel();
 
+  // Highlight the active nav link based on the current page filename.
   const path = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === path);

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- Navigation -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a href="index.html" class="nav-brand">Serote<span class="accent"> Estates</span></a>
@@ -33,6 +34,7 @@
     </div>
   </nav>
 
+  <!-- Page header -->
   <header class="page-header">
     <div class="container">
       <h1>Property Listings</h1>
@@ -46,7 +48,7 @@
   <main class="section">
     <div class="container">
 
-      <!-- Filters -->
+      <!-- Filter bar — URL query params (from hero search) are pre-applied by initListingsPage() -->
       <div class="filter-bar" role="search" aria-label="Property filters">
         <div class="filter-group">
           <label for="f-search">Search</label>
@@ -101,10 +103,11 @@
             <option value="newest">Newest First</option>
           </select>
         </div>
+        <!-- Result count is updated by renderListings() on every filter change -->
         <span id="results-count" aria-live="polite"></span>
       </div>
 
-      <!-- Results -->
+      <!-- Listings grid — populated by renderListings(); shows an empty state when no match found -->
       <div id="listings-grid" class="properties-grid" aria-label="Property listings">
         <!-- filled in by JS -->
       </div>

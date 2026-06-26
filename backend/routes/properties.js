@@ -1,9 +1,14 @@
+// Public property routes: listing with filters and single-property detail.
+// No authentication required — these endpoints are open to all visitors.
 const express = require('express');
 const pool = require('../config/db');
 const { formatProperty, PROPERTY_SELECT } = require('../utils/properties');
 
 const router = express.Router();
 
+// GET /api/properties
+// Builds a dynamic WHERE clause from any combination of query-string filters.
+// PROPERTY_SELECT already excludes archived listings via its base WHERE clause.
 router.get('/', async (req, res) => {
   try {
     const { city, type, status, minPrice, maxPrice, beds, search, sort, featured } = req.query;
@@ -38,12 +43,14 @@ router.get('/', async (req, res) => {
       sql += ' AND p.price <= ?';
       params.push(Number(maxPrice));
     }
+    // Keyword search across title, suburb, and city.
     if (search) {
       sql += ' AND (p.title LIKE ? OR p.suburb LIKE ? OR p.city LIKE ?)';
       const term = `%${search}%`;
       params.push(term, term, term);
     }
 
+    // Default sort: featured listings first, then newest.
     if (sort === 'price-asc') sql += ' ORDER BY p.price ASC';
     else if (sort === 'price-desc') sql += ' ORDER BY p.price DESC';
     else if (sort === 'newest') sql += ' ORDER BY p.created_at DESC';
@@ -57,6 +64,8 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/properties/:id
+// Returns the property plus all its images for the detail page gallery.
 router.get('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -65,6 +74,7 @@ router.get('/:id', async (req, res) => {
     const [rows] = await pool.query(`${PROPERTY_SELECT} AND p.property_id = ?`, [id]);
     if (!rows.length) return res.status(404).json({ error: 'Property not found' });
 
+    // Fetch all images; primary image first, then by sort_order.
     const [images] = await pool.query(
       `SELECT image_url FROM property_images WHERE property_id = ? ORDER BY is_primary DESC, sort_order ASC`,
       [id]

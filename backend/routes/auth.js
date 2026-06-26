@@ -1,3 +1,4 @@
+// Authentication routes: register, login, and profile fetch (/me).
 const express = require('express');
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
@@ -5,12 +6,16 @@ const { signToken, formatUser, authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Maps the client-facing role string to the value stored in the DB.
+// Any unrecognised role defaults to "buyer" so agents must self-select during registration.
 function toDbRole(clientRole) {
   if (clientRole === 'user') return 'buyer';
   if (clientRole === 'agent') return 'agent';
   return 'buyer';
 }
 
+// POST /api/auth/register
+// Creates a new account. Does not issue a token; the client must log in after registering.
 router.post('/register', async (req, res) => {
   try {
     const { name, email, phone, password, role } = req.body;
@@ -22,11 +27,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 8 characters' });
     }
 
+    // Check for duplicate email before hashing to save CPU on a 409 path.
     const [existing] = await pool.query('SELECT user_id FROM users WHERE email = ?', [email.trim().toLowerCase()]);
     if (existing.length) {
       return res.status(409).json({ error: 'An account with this email already exists' });
     }
 
+    // Cost factor 12 is intentionally slow to resist brute-force attacks.
     const passwordHash = await bcrypt.hash(password, 12);
     const dbRole = toDbRole(role);
 
@@ -45,6 +52,9 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// POST /api/auth/login
+// Returns a signed JWT on success. Uses the same error message for missing user
+// and wrong password to prevent email enumeration.
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -53,6 +63,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
+    // Only active accounts can log in; is_active = 0 acts as a soft ban.
     const [rows] = await pool.query(
       `SELECT user_id, full_name, email, phone, password_hash, role FROM users
        WHERE email = ? AND is_active = 1`,
@@ -77,6 +88,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// GET /api/auth/me
+// Returns the current user's profile using the token's embedded user ID.
 router.get('/me', authRequired, async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -84,6 +97,7 @@ router.get('/me', authRequired, async (req, res) => {
       [req.user.id]
     );
     if (!rows.length) return res.status(401).json({ error: 'User not found' });
+    // Re-use the incoming token rather than signing a new one.
     res.json({ user: formatUser(rows[0], req.headers.authorization.slice(7)) });
   } catch (err) {
     console.error('Me error:', err);

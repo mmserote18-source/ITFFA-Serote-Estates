@@ -1,3 +1,7 @@
+// Shared property formatting utilities used by both public and admin routes.
+
+// Hardcoded avatars and titles for the three seeded agent accounts.
+// These are placeholder values because the DB does not store profile photos.
 const AGENT_AVATARS = {
   2: 'https://i.pravatar.cc/150?img=47',
   3: 'https://i.pravatar.cc/150?img=12',
@@ -10,6 +14,7 @@ const AGENT_TITLES = {
   4: 'Rental Specialist',
 };
 
+// Converts a raw DB row into the flat object shape consumed by the frontend.
 function formatProperty(row) {
   const suburb = row.suburb || '';
   const city = row.city || '';
@@ -17,6 +22,7 @@ function formatProperty(row) {
     id: row.property_id,
     title: row.title,
     description: row.description || '',
+    // Combine suburb + city into a single display string, omitting suburb when absent.
     location: suburb ? `${suburb}, ${city}` : city,
     suburb,
     city,
@@ -33,12 +39,15 @@ function formatProperty(row) {
     agentPhone: row.agent_phone || null,
     agentAvatar: AGENT_AVATARS[row.agent_id] || 'https://i.pravatar.cc/150?img=1',
     agentTitle: AGENT_TITLES[row.agent_id] || 'Property Agent',
+    // Fallback image is an Unsplash photo so cards never render a broken image.
     image: row.primary_image || 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80',
     images: row.images || (row.primary_image ? [row.primary_image] : []),
     featured: Boolean(row.is_featured),
   };
 }
 
+// Base SELECT used by every property query. Ends with WHERE so callers can AND on
+// additional conditions without repeating the joins. Archived listings are always excluded.
 const PROPERTY_SELECT = `
   SELECT
     p.property_id,

@@ -1,7 +1,10 @@
+// JWT signing, verification, and middleware helpers shared across all routes.
 const jwt = require('jsonwebtoken');
 
+// Falls back to a hard-coded dev secret so the app boots without a .env file.
 const JWT_SECRET = process.env.JWT_SECRET || 'estatehub-dev-secret';
 
+// Signs a 7-day token; role is embedded so every request avoids a DB lookup.
 function signToken(user) {
   return jwt.sign(
     { id: user.user_id, email: user.email, role: user.role, name: user.full_name },
@@ -10,6 +13,7 @@ function signToken(user) {
   );
 }
 
+// Hard gate: returns 401 when no valid Bearer token is present.
 function authRequired(req, res, next) {
   const header = req.headers.authorization;
   if (!header?.startsWith('Bearer ')) {
@@ -23,18 +27,20 @@ function authRequired(req, res, next) {
   }
 }
 
+// Soft gate: sets req.user when a valid token exists, continues silently for guests.
 function optionalAuth(req, res, next) {
   const header = req.headers.authorization;
   if (header?.startsWith('Bearer ')) {
     try {
       req.user = jwt.verify(header.slice(7), JWT_SECRET);
     } catch {
-      /* guest request */
+      /* guest request — ignore invalid token and proceed unauthenticated */
     }
   }
   next();
 }
 
+// Both admins and agents are allowed through the admin routes; agents see only their own data.
 function adminRequired(req, res, next) {
   authRequired(req, res, () => {
     if (req.user.role !== 'admin' && req.user.role !== 'agent') {
@@ -44,12 +50,13 @@ function adminRequired(req, res, next) {
   });
 }
 
-/** Map DB role (buyer) to frontend role (user) */
+// DB stores "buyer" but the frontend shows "user" to avoid exposing internal terminology.
 function toClientRole(dbRole) {
   if (dbRole === 'buyer') return 'user';
   return dbRole;
 }
 
+// Shapes a DB user row into the object returned to clients on login/register.
 function formatUser(row, token) {
   return {
     id: row.user_id,

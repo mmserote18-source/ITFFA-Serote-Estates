@@ -1,3 +1,6 @@
+// Admin and agent routes: stats, listings, enquiries, bookings, and users.
+// All routes require adminRequired — both 'admin' and 'agent' roles pass.
+// Agents see only their own data; admins see everything.
 const express = require('express');
 const pool = require('../config/db');
 const { adminRequired } = require('../middleware/auth');
@@ -7,10 +10,13 @@ const router = express.Router();
 
 router.use(adminRequired);
 
+// GET /api/admin/stats
+// Returns aggregate counts scoped to the requesting agent when role === 'agent'.
 router.get('/stats', async (req, res) => {
   try {
     const isAgent = req.user.role === 'agent';
     const id = req.user.id;
+    // Reusable subquery to restrict counts to the agent's own properties.
     const sub = 'SELECT property_id FROM properties WHERE agent_id = ?';
 
     const [[listings]] = await pool.query(
@@ -29,6 +35,7 @@ router.get('/stats', async (req, res) => {
       `SELECT COUNT(*) AS count FROM viewing_bookings WHERE status = 'pending'${isAgent ? ` AND property_id IN (${sub})` : ''}`,
       isAgent ? [id] : []
     );
+    // Agents do not manage users, so the user count is hidden from them.
     const [[users]] = isAgent
       ? [[{ count: null }]]
       : await pool.query(`SELECT COUNT(*) AS count FROM users WHERE is_active = 1`);
@@ -46,6 +53,8 @@ router.get('/stats', async (req, res) => {
   }
 });
 
+// GET /api/admin/enquiries
+// Returns the 50 most recent enquiries, scoped to the agent's listings when applicable.
 router.get('/enquiries', async (req, res) => {
   try {
     const isAgent = req.user.role === 'agent';
@@ -68,6 +77,7 @@ router.get('/enquiries', async (req, res) => {
   }
 });
 
+// GET /api/admin/bookings
 router.get('/bookings', async (req, res) => {
   try {
     const isAgent = req.user.role === 'agent';
@@ -89,6 +99,7 @@ router.get('/bookings', async (req, res) => {
   }
 });
 
+// GET /api/admin/users — admin only, agents are blocked.
 router.get('/users', async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
@@ -106,6 +117,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
+// GET /api/admin/properties
 router.get('/properties', async (req, res) => {
   try {
     const isAgent = req.user.role === 'agent';
@@ -132,6 +144,8 @@ router.get('/properties', async (req, res) => {
   }
 });
 
+// POST /api/admin/properties
+// Creates a new listing and notifies buyers who have saved properties in the same city.
 router.post('/properties', async (req, res) => {
   try {
     const {
@@ -142,6 +156,7 @@ router.post('/properties', async (req, res) => {
       return res.status(400).json({ error: 'Title, type, status, price and city are required' });
     }
 
+    // Agents always own their listings; admins can specify an agentId or default to themselves.
     const agentId = req.user.role === 'agent' ? req.user.id : req.body.agentId || req.user.id;
 
     const [result] = await pool.query(
@@ -172,7 +187,7 @@ router.post('/properties', async (req, res) => {
       );
     }
 
-    // Notify buyers who have favourites in the same city
+    // Find buyers who have previously saved a listing in this city and notify them of the new listing.
     const [buyers] = await pool.query(
       `SELECT DISTINCT f.user_id FROM favourites f
        JOIN properties p ON p.property_id = f.property_id
@@ -194,6 +209,9 @@ router.post('/properties', async (req, res) => {
   }
 });
 
+// PATCH /api/admin/properties/:id
+// Partial update using COALESCE so omitted fields retain their current values.
+// Notifies favouriters when price or status changes.
 router.patch('/properties/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -203,6 +221,7 @@ router.patch('/properties/:id', async (req, res) => {
     if (!current.length) return res.status(404).json({ error: 'Property not found' });
     const cur = current[0];
 
+    // Agents may only edit listings they own.
     if (req.user.role === 'agent' && cur.agent_id !== req.user.id) {
       return res.status(403).json({ error: 'You can only edit your own listings' });
     }
@@ -236,7 +255,7 @@ router.patch('/properties/:id', async (req, res) => {
       }
     }
 
-    // Notify buyers who favourited this property if price or status changed
+    // Notify buyers who favourited this property if price or status changed.
     const propTitle = title || cur.title;
     const [favUsers] = await pool.query(`SELECT user_id FROM favourites WHERE property_id = ?`, [id]);
     if (price && Number(price) !== Number(cur.price)) {
@@ -264,6 +283,8 @@ router.patch('/properties/:id', async (req, res) => {
   }
 });
 
+// PATCH /api/admin/properties/:id/archive
+// Soft-deletes a listing by setting status to 'archived' rather than deleting the row.
 router.patch('/properties/:id/archive', async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -287,6 +308,8 @@ router.patch('/properties/:id/archive', async (req, res) => {
   }
 });
 
+// PATCH /api/admin/enquiries/:id
+// Saves the agent's reply and sends a notification to the buyer.
 router.patch('/enquiries/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -301,6 +324,7 @@ router.patch('/enquiries/:id', async (req, res) => {
     );
     if (!rows.length) return res.status(404).json({ error: 'Enquiry not found' });
     const enq = rows[0];
+    // Agents may only reply to enquiries on their own listings.
     if (req.user.role === 'agent' && enq.agent_id !== req.user.id) {
       return res.status(403).json({ error: 'Not your enquiry' });
     }
@@ -310,6 +334,7 @@ router.patch('/enquiries/:id', async (req, res) => {
       [reply.trim(), id]
     );
 
+    // Only notify if the enquiry was submitted by a registered buyer.
     if (enq.buyer_id) {
       await pool.query(
         `INSERT INTO notifications (user_id, type, title, body, related_id) VALUES (?, 'enquiry_reply', ?, ?, ?)`,
@@ -324,6 +349,8 @@ router.patch('/enquiries/:id', async (req, res) => {
   }
 });
 
+// PATCH /api/admin/bookings/:id
+// Confirms or rejects a viewing booking and notifies the buyer.
 router.patch('/bookings/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -346,6 +373,7 @@ router.patch('/bookings/:id', async (req, res) => {
 
     await pool.query(`UPDATE viewing_bookings SET status = ? WHERE booking_id = ?`, [status, id]);
 
+    // Notify the buyer only if they have an account; guest bookings have no user to notify.
     if (booking.buyer_id) {
       await pool.query(
         `INSERT INTO notifications (user_id, type, title, body, related_id) VALUES (?, 'booking_update', ?, ?, ?)`,

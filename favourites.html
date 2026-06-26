@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+
+  <!-- Navigation -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a href="index.html" class="nav-brand">Serote<span class="accent"> Estates</span></a>
@@ -16,6 +18,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="listings.html">Listings</a></li>
         <li><a href="favourites.html" class="active">Favourites</a></li>
+        <!-- Role-specific links shown by applyAuthUI() -->
         <li class="nav-admin-link" style="display:none"><a href="admin.html">Admin</a></li>
         <li class="nav-agent-link" style="display:none"><a href="landlord.html">My Portal</a></li>
         <li class="nav-buyer-link" style="display:none"><a href="#" onclick="openMyBookingsModal();return false">My Bookings</a></li>
@@ -32,6 +35,7 @@
     </div>
   </nav>
 
+  <!-- Page header -->
   <header class="page-header">
     <div class="container">
       <h1>❤️ My Saved Properties</h1>
@@ -42,12 +46,14 @@
     </div>
   </header>
 
+  <!-- Favourites grid — populated by initFavouritesPage(); shows an empty-state message when no saves exist -->
   <main class="section">
     <div class="container">
       <div id="favourites-grid" class="properties-grid"><!-- filled in by JS --></div>
     </div>
   </main>
 
+  <!-- Minimal footer for inner pages -->
   <footer class="footer">
     <div class="footer-bottom" style="padding:1.2rem 0;text-align:center;border-top:none">
       <p>&copy; 2026 Serote Estates (Pty) Ltd. All rights reserved.</p>

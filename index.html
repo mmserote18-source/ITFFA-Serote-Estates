@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -17,14 +17,17 @@
       <a href="index.html" class="nav-brand">
         Serote<span class="accent"> Estates</span>
       </a>
+      <!-- Desktop nav links — hidden on mobile; the hamburger drawer takes over -->
       <ul class="nav-links">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="listings.html">Listings</a></li>
         <li><a href="favourites.html">Favourites</a></li>
+        <!-- Role-specific links revealed by applyAuthUI() after login -->
         <li class="nav-admin-link" style="display:none"><a href="admin.html">Admin</a></li>
         <li class="nav-agent-link" style="display:none"><a href="landlord.html">My Portal</a></li>
         <li class="nav-buyer-link" style="display:none"><a href="#" onclick="openMyBookingsModal();return false">My Bookings</a></li>
       </ul>
+      <!-- Auth buttons: hide-when-auth / show-when-auth are toggled by applyAuthUI() -->
       <div class="nav-auth hide-when-auth">
         <a href="login.html" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.5)">Log In</a>
         <a href="register.html" class="btn btn-accent btn-sm">Register</a>
@@ -33,20 +36,21 @@
         <span style="color:rgba(255,255,255,0.8);font-size:0.88rem">👤 <span class="user-name-display"></span></span>
         <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff" onclick="logoutUser()">Logout</button>
       </div>
+      <!-- Hamburger button — JS builds the slide-out drawer on DOMContentLoaded -->
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- Hero — full-bleed banner with headline and quick-search form -->
   <section class="hero" aria-labelledby="hero-heading">
     <div class="container">
       <div class="hero-content">
 <h1 id="hero-heading">Find your next <em>home</em><br>in South Africa</h1>
         <p>Thousands of properties for sale and rent across Johannesburg, Pretoria, and beyond. Connect with agents and book viewings online.</p>
 
-        <!-- Search form -->
+        <!-- Search form — submits to listings.html with query-string parameters -->
         <form id="hero-search-form" novalidate>
           <div class="search-box">
             <div class="search-field">
@@ -86,7 +90,7 @@
     </div>
   </section>
 
-  <!-- Stats -->
+  <!-- Stats bar — live counts fetched from /api/stats and animated by JS -->
   <div class="stats-bar">
     <div class="container">
       <div class="stat-item">
@@ -104,7 +108,7 @@
     </div>
   </div>
 
-  <!-- Featured listings -->
+  <!-- Featured listings — grid populated by initHomePage() from the API -->
   <section class="section" aria-labelledby="featured-heading">
     <div class="container">
       <header class="section-header">
@@ -121,7 +125,7 @@
     </div>
   </section>
 
-  <!-- How it works -->
+  <!-- How it works — static explainer steps -->
   <section class="section section-alt" aria-labelledby="how-heading">
     <div class="container">
       <header class="section-header">
@@ -187,7 +191,7 @@
     </div>
   </footer>
 
-  <!-- Toast notifications -->
+  <!-- Toast container — toast messages are injected here by showToast() -->
   <div id="toast-container" aria-live="polite"></div>
 
   <script src="js/api.js"></script>

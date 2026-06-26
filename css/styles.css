@@ -1,10 +1,13 @@
-﻿/* Serote Estates – Styles */
+/* Serote Estates – Styles */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-/* Design tokens */
+/* Design tokens
+   --night / --chalk are the primary dark and light surface colours.
+   --brass is the brand accent (gold) used for highlights, borders, and CTAs.
+*/
 :root {
-  /* Colours */
+
   --night:        #0C1824;
   --night-mid:    #1A3048;
   --chalk:        #F5F1EB;
@@ -19,7 +22,7 @@
   --sky:          #2E6DA4;
   --ink:          #1A1614;
 
-  /* Aliases */
+  /* Semantic aliases — use these in component styles rather than raw colour names */
   --primary:       var(--night);
   --primary-light: var(--brass);
   --accent:        var(--brass);
@@ -122,6 +125,7 @@ ul { list-style: none; }
 }
 .nav-brand .brand-icon { font-size: 1.1rem; opacity: 0.75; }
 .nav-brand span.accent { color: var(--brass-l); font-weight: 400; }
+/* Centre the nav links absolutely so they remain centred regardless of the auth buttons width */
 .nav-links {
   display: flex;
   align-items: center;
@@ -167,7 +171,7 @@ ul { list-style: none; }
   position: relative;
   overflow: hidden;
 }
-/* Signature: brass dot-grid pattern on dark */
+/* Signature: brass dot-grid pattern overlaid on the dark hero background */
 .hero::before {
   content: '';
   position: absolute; inset: 0;
@@ -288,6 +292,7 @@ ul { list-style: none; }
   letter-spacing: -0.025em;
 }
 .section-header p { color: var(--stone); margin-top: 0.5rem; font-weight: 300; }
+/* Decorative brass rule beneath section titles */
 .section-divider {
   width: 36px;
   height: 2px;
@@ -340,6 +345,7 @@ ul { list-style: none; }
 .card-badge.for-rent { background: var(--night); }
 .card-badge.sold { background: var(--stone); }
 
+/* Favourite (heart) button overlaid on the card image */
 .fav-btn {
   position: absolute;
   top: 12px; right: 12px;
@@ -393,7 +399,7 @@ ul { list-style: none; }
 .agent-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
 .agent-name { font-size: 0.75rem; font-weight: 500; color: var(--ink); }
 
-/* Filter bar */
+/* Filter bar — horizontal scrollable strip of filter controls on the listings page */
 .filter-bar {
   background: var(--white);
   border: 1px solid var(--border);
@@ -439,6 +445,7 @@ ul { list-style: none; }
   overflow: hidden;
   max-height: 440px;
 }
+/* Main image spans both gallery rows to create a hero + two thumbnail layout */
 .detail-gallery .main-img { grid-row: 1 / 3; }
 .detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
 .detail-layout {
@@ -466,6 +473,7 @@ ul { list-style: none; }
 .detail-feature { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; font-size: 0.81rem; color: var(--stone); }
 .detail-feature strong { font-size: 1rem; color: var(--ink); }
 .detail-feature .icon { font-size: 1.2rem; }
+/* Sidebar sticks while scrolling the property description */
 .detail-sidebar { position: sticky; top: 80px; }
 .sidebar-card {
   background: var(--white);
@@ -512,7 +520,7 @@ ul { list-style: none; }
 textarea.form-control { resize: vertical; min-height: 100px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-/* Auth pages */
+/* Auth pages — centred card layout used by login.html and register.html */
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -522,6 +530,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   padding: 2rem;
   position: relative;
 }
+/* Matches the dot-grid pattern used on the hero */
 .auth-page::before {
   content: '';
   position: absolute; inset: 0;
@@ -564,7 +573,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .auth-divider span { background: var(--white); padding: 0 0.75rem; position: relative; }
 .auth-switch { text-align: center; font-size: 0.85rem; color: var(--stone); margin-top: 1.2rem; }
 
-/* Admin panel */
+/* Admin panel — two-column layout: sidebar + main content area */
 .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
 .admin-sidebar { background: var(--ink); color: #fff; padding: 1.5rem 0; }
 .admin-sidebar .nav-section-title {
@@ -601,6 +610,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   font-weight: 600;
   letter-spacing: -0.025em;
 }
+/* Stat cards — coloured left-border variant used in admin dashboards */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 .stat-card {
   background: var(--white);
@@ -623,6 +633,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .stat-card .change { font-size: 0.75rem; color: var(--success); }
 
+/* Data tables used in admin and landlord panels */
 .data-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
 .data-table th {
   background: var(--chalk);
@@ -639,13 +650,14 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table tr:hover td { background: var(--chalk); }
 
+/* Status badges */
 .badge { display: inline-block; padding: 0.18rem 0.52rem; border-radius: 2px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 .badge-success { background: rgba(42,125,79,0.1); color: #1A5E38; }
 .badge-warning { background: rgba(201,146,42,0.12); color: #8A6010; }
 .badge-danger  { background: rgba(192,48,48,0.1); color: #961F1F; }
 .badge-info    { background: rgba(46,109,164,0.1); color: #1E5A8C; }
 
-/* Modal */
+/* Modal — overlay + centred card with slide-up animation */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(12,24,36,0.52);
@@ -691,6 +703,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   transition: color var(--transition);
 }
 .notif-bell-btn:hover { color: #fff; }
+/* Unread count badge on the bell icon */
 .notif-badge {
   position: absolute;
   top: -5px; right: -5px;
@@ -731,6 +744,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .notif-item:last-child { border-bottom: none; }
 .notif-item:hover { background: var(--chalk); }
+/* Unread items get a brass left-border and a subtle background tint */
 .notif-item.unread { background: rgba(201,146,42,0.05); border-left: 2px solid var(--brass); }
 .notif-item.unread:hover { background: rgba(201,146,42,0.09); }
 .notif-title { font-size: 0.82rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
@@ -738,7 +752,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .notif-time { font-size: 0.69rem; color: var(--stone); }
 .notif-empty { padding: 1.5rem; text-align: center; color: var(--stone); font-size: 0.85rem; }
 
-/* Toast notifications */
+/* Toast notifications — stacked in the bottom-right corner */
 #toast-container {
   position: fixed; bottom: 1.5rem; right: 1.5rem;
   z-index: 9999;
@@ -787,7 +801,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   color: rgba(255,255,255,0.22);
 }
 
-/* Page header */
+/* Page header — dark banner with dot-grid texture used on inner pages */
 .page-header {
   background:
     linear-gradient(to bottom, rgba(12,24,36,0.78) 0%, rgba(12,24,36,0.68) 100%),
@@ -817,7 +831,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .breadcrumb a:hover { color: var(--brass-l); }
 .breadcrumb span { color: rgba(255,255,255,0.28); }
 
-/* Empty state */
+/* Empty state — shown when a grid has no items to display */
 .empty-state { text-align: center; padding: 4rem 1rem; }
 .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
 .empty-state h2 {
@@ -829,7 +843,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 }
 .empty-state p { color: var(--stone); margin-bottom: 1.5rem; font-weight: 300; }
 
-/* Agent card */
+/* Agent card — used on the home page "Our Agents" section */
 .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
 .agent-card {
   background: var(--white);
@@ -851,7 +865,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .agent-card .title { font-size: 0.77rem; color: var(--stone); margin-bottom: 0.75rem; }
 .agent-card .listing-count { font-size: 0.77rem; color: var(--brass); font-weight: 500; }
 
-/* How it works */
+/* How it works — numbered step grid on the home page */
 .how-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -876,8 +890,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .how-step h3 { font-size: 0.97rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink); }
 .how-step p { font-size: 0.88rem; color: var(--stone); font-weight: 300; line-height: 1.6; }
 
-/* Responsive */
-
+/* Responsive — tablet */
 @media (max-width: 1024px) {
   .search-box { grid-template-columns: 1fr 1fr; }
   .search-box .btn { grid-column: 1 / -1; }
@@ -887,7 +900,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   .admin-layout { grid-template-columns: 200px 1fr; }
 }
 
-/* Slide-out nav drawer */
+/* Slide-out nav drawer — used on mobile instead of the horizontal nav links */
 .nav-drawer-overlay {
   position: fixed; inset: 0;
   background: rgba(12,24,36,0.6);
@@ -968,11 +981,12 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   padding: 0.3rem 0;
 }
 
-/* Hamburger → X animation */
+/* Hamburger → X animation when the drawer is open */
 .hamburger.drawer-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .hamburger.drawer-open span:nth-child(2) { opacity: 0; }
 .hamburger.drawer-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+/* Responsive — mobile */
 @media (max-width: 768px) {
   .navbar .nav-links { display: none; }
   /* drawer handles auth on mobile */
@@ -995,6 +1009,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   #results-count { margin-left: 0; }
 }
 
+/* Responsive — small phones */
 @media (max-width: 480px) {
   .hero h1 { font-size: 2.4rem; }
   .properties-grid { grid-template-columns: 1fr; }
@@ -1002,6 +1017,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* Respect the user's OS-level reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

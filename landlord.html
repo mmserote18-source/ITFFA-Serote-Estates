@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- Top navigation — initLandlordPanel() redirects non-agents away on load -->
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a href="index.html" class="nav-brand">Serote<span class="accent"> Estates</span></a>
@@ -26,9 +27,10 @@
     </div>
   </nav>
 
+  <!-- Two-column layout reusing the same admin-layout CSS class -->
   <div class="admin-layout">
 
-    <!-- Sidebar -->
+    <!-- Sidebar — agent-scoped navigation; data-section values map to renderLandlordSection() -->
     <aside class="admin-sidebar" role="navigation" aria-label="Landlord navigation">
       <div class="landlord-nav-link admin-nav-link active" data-section="dashboard">
         <span class="icon">📊</span> Dashboard
@@ -49,13 +51,14 @@
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main content — rendered dynamically by renderLandlordDashboard() / renderLandlordSection() -->
     <main class="landlord-main" id="landlord-main">
       <div class="admin-header">
         <h1 id="landlord-page-title">Dashboard</h1>
         <button class="btn btn-accent btn-sm" onclick="renderLandlordSection('add-listing')">+ Add Listing</button>
       </div>
-      <div id="landlord-content"><!-- Populated by JS --></div>
+      <!-- Content is injected here by JS -->
+      <div id="landlord-content"></div>
     </main>
 
   </div>
