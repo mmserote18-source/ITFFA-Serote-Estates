@@ -1,7 +1,7 @@
 // Favourites routes: list saved properties and toggle save/unsave for authenticated users.
 const express = require('express');
 const pool = require('../config/db');
-const { authRequired } = require('../middleware/auth');
+const { authRequired } = require('../auth/auth');
 const { formatProperty, PROPERTY_SELECT } = require('../utils/properties');
 
 const router = express.Router();

@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
-const { signToken, formatUser, authRequired } = require('../middleware/auth');
+const { signToken, formatUser, authRequired } = require('../auth/auth');
 
 const router = express.Router();
 

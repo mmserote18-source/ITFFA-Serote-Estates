@@ -1,7 +1,7 @@
 // Enquiry route: allows buyers (and guests) to send a message about a property.
 const express = require('express');
 const pool = require('../config/db');
-const { optionalAuth } = require('../middleware/auth');
+const { optionalAuth } = require('../auth/auth');
 
 const router = express.Router();
 

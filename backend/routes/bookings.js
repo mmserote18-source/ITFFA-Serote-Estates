@@ -1,7 +1,7 @@
 // Viewing booking routes: submit, list own bookings, and cancel.
 const express = require('express');
 const pool = require('../config/db');
-const { optionalAuth, authRequired } = require('../middleware/auth');
+const { optionalAuth, authRequired } = require('../auth/auth');
 
 const router = express.Router();
 

@@ -3,7 +3,7 @@
 // Agents see only their own data; admins see everything.
 const express = require('express');
 const pool = require('../config/db');
-const { adminRequired } = require('../middleware/auth');
+const { adminRequired } = require('../auth/auth');
 const { formatProperty, PROPERTY_SELECT } = require('../utils/properties');
 
 const router = express.Router();

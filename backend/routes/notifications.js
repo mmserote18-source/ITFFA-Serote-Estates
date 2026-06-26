@@ -1,7 +1,7 @@
 // Notification routes: fetch, mark one as read, and mark all as read.
 const express = require('express');
 const pool = require('../config/db');
-const { authRequired } = require('../middleware/auth');
+const { authRequired } = require('../auth/auth');
 
 const router = express.Router();
 
